@@ -58,7 +58,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\</OutputPath>
-    <DocumentationFile>bin\DotNetNuke.Modules.Events.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
     <BaseAddress>1072168960</BaseAddress>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>

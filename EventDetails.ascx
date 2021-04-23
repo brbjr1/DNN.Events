@@ -42,7 +42,7 @@
         </div>
     </div>
     <div id="divIcalendar" Runat="server" class="DetailClear DetailiCalDiv">
-        <div class="SubHead DetailiCalLeft">
+        <div class="SubHead DetailiCalLeft" style="display:none">
             <asp:Image ID="imgEmail" runat="server" IconKey="Email"/>&nbsp;
             <asp:LinkButton ID="cmdEmail" CssClass="CommandButton" runat="server" BorderStyle="none" resourcekey="cmdEmail" ValidationGroup="EventEmailiCal" OnClick="cmdEmail_Click">
             </asp:LinkButton>
@@ -61,8 +61,8 @@
     </div>
     <div id="divEventDetails2" runat="server" class="DetailClear DetailEventDetails2"/>
     <div id="divEnrollment" Runat="server" class="DetailClear DetailEnrollDiv">
-        <div class="SubHead DetailEnrollLeft">
-            <div id="enroll1" runat="server" visible="false">
+        <div class="SubHead">
+            <div id="enroll1" runat="server" visible="false" align="center">
                 <asp:Image ID="imgEnroll" runat="server" ImageUrl="Images/enroll.gif"/>&nbsp;
                 <asp:LinkButton ID="cmdSignup" CssClass="CommandButton" runat="server" BorderStyle="none"
                                 ValidationGroup="EventSignup" OnClick="cmdSignup_Click">Enroll for this Event?</asp:LinkButton>
@@ -72,7 +72,7 @@
                 <asp:Label ID="lblEnrollTooLate" runat="server">Event has started, it is no longer possible to enroll.</asp:Label>
             </div>
         </div>
-        <div class="SubHead DetailEnrollRight">
+        <div class="SubHead">
             <div id="enroll3" runat="server" visible="false">
                 <asp:Label ID="lblNoEnrolee" runat="server" resourcekey="lblNoEnrolee" class="DetailEnrollLabel" Width="100px">No. of Enrolees</asp:Label>&nbsp;
                 <asp:TextBox ID="txtNoEnrolees" runat="server" CssClass="NormalTextBox" Font-Size="8pt" MaxLength="3" Width="30">1</asp:TextBox>&nbsp;
@@ -108,9 +108,13 @@
                     <asp:TextBox ID="txtAnonTelephone" CssClass="NormalTextBox" runat="server" Width="199px"></asp:TextBox>
                 </div>
             </div>
-            <div id="enroll2" runat="server" visible="false">
+            <div id="enroll2" runat="server" visible="false" align="center">
                 <asp:Image ID="imgSignup" runat="server" ImageUrl="Images/enroll.gif"/>&nbsp;
                 <asp:Label ID="lblSignup" runat="server">You are not enrolled!</asp:Label>
+                 <asp:LinkButton ID="cmdUNSignup" CssClass="CommandButton" runat="server" BorderStyle="none"
+                                ValidationGroup="EventSignup" OnClick="cmdUNSignup_Click">
+                    Click Here to UnEnroll for this Event
+                </asp:LinkButton>
             </div>
         </div>
     </div>

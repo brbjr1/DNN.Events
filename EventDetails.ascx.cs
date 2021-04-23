@@ -434,6 +434,11 @@ namespace DotNetNuke.Modules.Events
                             "onclick",
                             "javascript:return confirm('" +
                             Localization.GetString("SureYouWantToEnroll", LocalResourceFile) + "');");
+                        
+                        //bbehrens custom
+                        cmdUNSignup.Attributes.Add(
+                            "onclick",
+                            "javascript:return confirm('Are You Sure You Want To Unenroll');");
                     }
                     valNoEnrolees.MaximumValue =
                         Convert.ToString(_eventInfo.MaxEnrollment - _eventInfo.Enrolled);
@@ -1663,6 +1668,89 @@ namespace DotNetNuke.Modules.Events
                                 Settings.Templates.txtEnrollMessageWaiting;
                             objEventEmail.SendEmails(objEventEmailInfo, objEvent, objEventSignups);
                         }
+                    }
+                }
+                BindEnrollList(objEvent);
+            }
+            catch (Exception exc) //Module failed to load
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
+            }
+        }
+
+        //bbehrens custom
+        protected void cmdUNSignup_Click(object sender, EventArgs e)
+        {
+            if (!Request.IsAuthenticated && !Settings.AllowAnonEnroll)
+            {
+                RedirectToLogin();
+            }
+            try
+            {
+                var objEvent = default(EventInfo);
+                var objCtlEvent = new EventController();
+                objEvent = objCtlEvent.EventsGet(ItemId, ModuleId);
+                if (!Request.IsAuthenticated && !objEvent.AllowAnonEnroll)
+                {
+                    RedirectToLogin();
+                }
+
+                // In case of custom enrollment page.
+                if (Settings.EnrollmentPageAllowed)
+                {
+                    if (!string.IsNullOrEmpty(Settings.EnrollmentPageDefaultUrl))
+                    {
+                        Response.Redirect(Settings.EnrollmentPageDefaultUrl + "?mod=" +
+                                               Convert.ToString(ModuleId) + "&event=" +
+                                               Convert.ToString(ItemId));
+                    }
+                    return;
+                }
+
+                // In case of standard paid enrollment.
+                // Check to see if unauthenticated user has already enrolled
+                var objCtlEventSignups = new EventSignupsController();
+                if (Request.IsAuthenticated)
+                {
+                    var objEventsSignups = default(EventSignupsInfo);
+                    objEventsSignups = objCtlEventSignups.EventsSignupsGetUser(objEvent.EventID, UserId, objEvent.ModuleID);//.EventsSignupsGetAnonUser(objEvent.EventID, txtAnonEmail.Text,objEvent.ModuleID);
+                    if (!ReferenceEquals(objEventsSignups, null))
+                    {
+                        objCtlEventSignups.EventsSignupsDelete(objEventsSignups.SignupID, ModuleId);
+                        enroll1.Visible = true;
+                        enroll3.Visible = false;
+                        enroll5.Visible = false;
+                        enroll2.Visible = false;
+                        ShowMessage("You have been UnEnrolled.", MessageLevel.DNNSuccess);
+
+                        // Mail users
+                        if (Settings.SendEnrollMessageDeleted)
+                        {
+                            var objEventEmailInfo = new EventEmailInfo();
+                            var objEventEmail = new EventEmails(PortalId, ModuleId, LocalResourceFile,
+                                                                ((PageBase)Page).PageCulture.Name);
+                            objEventEmailInfo.TxtEmailSubject = Settings.Templates.txtEnrollMessageSubject;
+                            objEventEmailInfo.TxtEmailBody = Settings.Templates.txtEnrollMessageDeleted;
+                            objEventEmailInfo.TxtEmailFrom = Settings.StandardEmail;
+                            objEventEmailInfo.UserEmails.Add(PortalSettings.UserInfo.Email);
+                            objEventEmailInfo.UserLocales.Add(PortalSettings.UserInfo.Profile.PreferredLocale);
+                            objEventEmailInfo.UserTimeZoneIds.Add(PortalSettings.UserInfo.Profile.PreferredTimeZone
+                                                                      .Id);
+                            objEventEmailInfo.UserIDs.Add(objEvent.OwnerID);
+                            objEventEmail.SendEmails(objEventEmailInfo, objEvent, objEventsSignups);
+                        }
+
+
+                    }
+                    else
+                    {
+                        enroll1.Visible = false;
+                        enroll3.Visible = false;
+                        enroll5.Visible = false;
+                        ShowMessage(
+                                Localization.GetString("YouAreAlreadyEnrolledForThisEvent", LocalResourceFile),
+                                MessageLevel.DNNWarning);
+                        return;
                     }
                 }
                 BindEnrollList(objEvent);

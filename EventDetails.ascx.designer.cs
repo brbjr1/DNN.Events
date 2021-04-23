@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.Events {
-    
-    
-    public partial class EventDetails {
-        
+namespace DotNetNuke.Modules.Events
+{
+
+
+    public partial class EventDetails
+    {
+
         /// <summary>
         /// pnlEventsModuleDetails control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlEventsModuleDetails;
-        
+
         /// <summary>
         /// divMessage control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMessage;
-        
+
         /// <summary>
         /// lblMessage control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMessage;
-        
+
         /// <summary>
         /// divEventDetails1 control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divEventDetails1;
-        
+
         /// <summary>
         /// divReminder control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divReminder;
-        
+
         /// <summary>
         /// rem1 control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl rem1;
-        
+
         /// <summary>
         /// imgNotify control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image imgNotify;
-        
+
         /// <summary>
         /// cmdNotify control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdNotify;
-        
+
         /// <summary>
         /// chkReminderRec control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkReminderRec;
-        
+
         /// <summary>
         /// rem2 control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl rem2;
-        
+
         /// <summary>
         /// txtUserEmail control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtUserEmail;
-        
+
         /// <summary>
         /// valEmail control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator valEmail;
-        
+
         /// <summary>
         /// valEmail2 control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valEmail2;
-        
+
         /// <summary>
         /// txtReminderTime control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtReminderTime;
-        
+
         /// <summary>
         /// ddlReminderTimeMeasurement control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlReminderTimeMeasurement;
-        
+
         /// <summary>
         /// lblTimeBefore control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblTimeBefore;
-        
+
         /// <summary>
         /// valReminderTime2 control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valReminderTime2;
-        
+
         /// <summary>
         /// valReminderTime control.
         /// </summary>
@@ -173,7 +175,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator valReminderTime;
-        
+
         /// <summary>
         /// rem3 control.
         /// </summary>
@@ -182,7 +184,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl rem3;
-        
+
         /// <summary>
         /// imgConfirmation control.
         /// </summary>
@@ -191,7 +193,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image imgConfirmation;
-        
+
         /// <summary>
         /// lblConfirmation control.
         /// </summary>
@@ -200,7 +202,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblConfirmation;
-        
+
         /// <summary>
         /// divIcalendar control.
         /// </summary>
@@ -209,7 +211,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divIcalendar;
-        
+
         /// <summary>
         /// imgEmail control.
         /// </summary>
@@ -218,7 +220,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image imgEmail;
-        
+
         /// <summary>
         /// cmdEmail control.
         /// </summary>
@@ -227,7 +229,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdEmail;
-        
+
         /// <summary>
         /// iCal1 control.
         /// </summary>
@@ -236,7 +238,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl iCal1;
-        
+
         /// <summary>
         /// txtUserEmailiCal control.
         /// </summary>
@@ -245,7 +247,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtUserEmailiCal;
-        
+
         /// <summary>
         /// valEmailiCal control.
         /// </summary>
@@ -254,7 +256,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator valEmailiCal;
-        
+
         /// <summary>
         /// valEmailiCal2 control.
         /// </summary>
@@ -263,7 +265,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valEmailiCal2;
-        
+
         /// <summary>
         /// divEventDetails2 control.
         /// </summary>
@@ -272,7 +274,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divEventDetails2;
-        
+
         /// <summary>
         /// divEnrollment control.
         /// </summary>
@@ -281,7 +283,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divEnrollment;
-        
+
         /// <summary>
         /// enroll1 control.
         /// </summary>
@@ -290,7 +292,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl enroll1;
-        
+
         /// <summary>
         /// imgEnroll control.
         /// </summary>
@@ -299,7 +301,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image imgEnroll;
-        
+
         /// <summary>
         /// cmdSignup control.
         /// </summary>
@@ -308,7 +310,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdSignup;
-        
+
         /// <summary>
         /// enroll4 control.
         /// </summary>
@@ -317,7 +319,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl enroll4;
-        
+
         /// <summary>
         /// imgEnrollTooLate control.
         /// </summary>
@@ -326,7 +328,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image imgEnrollTooLate;
-        
+
         /// <summary>
         /// lblEnrollTooLate control.
         /// </summary>
@@ -335,7 +337,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblEnrollTooLate;
-        
+
         /// <summary>
         /// enroll3 control.
         /// </summary>
@@ -344,7 +346,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl enroll3;
-        
+
         /// <summary>
         /// lblNoEnrolee control.
         /// </summary>
@@ -353,7 +355,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblNoEnrolee;
-        
+
         /// <summary>
         /// txtNoEnrolees control.
         /// </summary>
@@ -362,7 +364,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNoEnrolees;
-        
+
         /// <summary>
         /// lblMaxNoEnrolees control.
         /// </summary>
@@ -371,7 +373,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMaxNoEnrolees;
-        
+
         /// <summary>
         /// valNoEnrolees control.
         /// </summary>
@@ -380,7 +382,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RangeValidator valNoEnrolees;
-        
+
         /// <summary>
         /// valNoEnrolees2 control.
         /// </summary>
@@ -389,7 +391,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valNoEnrolees2;
-        
+
         /// <summary>
         /// enroll5 control.
         /// </summary>
@@ -398,7 +400,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl enroll5;
-        
+
         /// <summary>
         /// lblAnonEmail control.
         /// </summary>
@@ -407,7 +409,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAnonEmail;
-        
+
         /// <summary>
         /// txtAnonEmail control.
         /// </summary>
@@ -416,7 +418,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAnonEmail;
-        
+
         /// <summary>
         /// valAnonEmail control.
         /// </summary>
@@ -425,7 +427,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator valAnonEmail;
-        
+
         /// <summary>
         /// valAnonEmail2 control.
         /// </summary>
@@ -434,7 +436,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valAnonEmail2;
-        
+
         /// <summary>
         /// lblAnonName control.
         /// </summary>
@@ -443,7 +445,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAnonName;
-        
+
         /// <summary>
         /// txtAnonName control.
         /// </summary>
@@ -452,7 +454,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAnonName;
-        
+
         /// <summary>
         /// valAnonName control.
         /// </summary>
@@ -461,7 +463,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator valAnonName;
-        
+
         /// <summary>
         /// lblAnonTelephone control.
         /// </summary>
@@ -470,7 +472,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAnonTelephone;
-        
+
         /// <summary>
         /// txtAnonTelephone control.
         /// </summary>
@@ -479,7 +481,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAnonTelephone;
-        
+
         /// <summary>
         /// enroll2 control.
         /// </summary>
@@ -488,7 +490,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl enroll2;
-        
+
         /// <summary>
         /// imgSignup control.
         /// </summary>
@@ -497,7 +499,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Image imgSignup;
-        
+
         /// <summary>
         /// lblSignup control.
         /// </summary>
@@ -506,7 +508,16 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSignup;
-        
+
+        /// <summary>
+        /// cmdUNSignup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton cmdUNSignup;
+
         /// <summary>
         /// divEventDetails3 control.
         /// </summary>
@@ -515,7 +526,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divEventDetails3;
-        
+
         /// <summary>
         /// divEnrollList control.
         /// </summary>
@@ -524,7 +535,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divEnrollList;
-        
+
         /// <summary>
         /// lblEnrolledUsers control.
         /// </summary>
@@ -533,7 +544,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblEnrolledUsers;
-        
+
         /// <summary>
         /// grdEnrollment control.
         /// </summary>
@@ -542,7 +553,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DataGrid grdEnrollment;
-        
+
         /// <summary>
         /// cmdvEventSignups control.
         /// </summary>
@@ -551,7 +562,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdvEventSignups;
-        
+
         /// <summary>
         /// divEventDetails4 control.
         /// </summary>
@@ -560,7 +571,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divEventDetails4;
-        
+
         /// <summary>
         /// returnButton control.
         /// </summary>
@@ -569,7 +580,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton returnButton;
-        
+
         /// <summary>
         /// editButton control.
         /// </summary>
@@ -578,7 +589,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink editButton;
-        
+
         /// <summary>
         /// editSeriesButton control.
         /// </summary>
@@ -587,7 +598,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink editSeriesButton;
-        
+
         /// <summary>
         /// deleteButton control.
         /// </summary>
@@ -596,7 +607,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton deleteButton;
-        
+
         /// <summary>
         /// deleteSeriesButton control.
         /// </summary>
@@ -605,7 +616,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton deleteSeriesButton;
-        
+
         /// <summary>
         /// cmdPrint control.
         /// </summary>
@@ -614,7 +625,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink cmdPrint;
-        
+
         /// <summary>
         /// cmdvEventSeries control.
         /// </summary>
@@ -623,7 +634,7 @@ namespace DotNetNuke.Modules.Events {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton cmdvEventSeries;
-        
+
         /// <summary>
         /// cmdvEvent control.
         /// </summary>
