@@ -2674,6 +2674,16 @@ namespace Components
         /// </summary>
         /// <value>The enroll time begin.</value>
         public DateTime EnrollTimeBegin { get; set; }
+
+
+        public string EnrollEmergencyContactName { get; set; }
+        public string EnrollEmergencyContactNumber { get; set; }
+        public string EnrollEmergencyContactDetails { get; set; }
+        public string EnrollWaverCurrent { get; set; }
+        public string EnrollWaverExpireDate { get; set; }
+        public string EnrollMemberShipCurrent { get; set; }
+        public string MemberExpireDate { get; set; }
+
     }
 
     #endregion

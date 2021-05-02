@@ -846,8 +846,17 @@ namespace Components
                     if (Settings.EnrollEditFields != "" || Settings.EnrollViewFields != "" ||
                         Settings.EnrollAnonFields != "")
                     {
-                        txtColumns = Settings.EnrollEditFields + ";" + Settings.EnrollViewFields + ";" +
-                                     Settings.EnrollAnonFields;
+                        txtColumns = Settings.EnrollEditFields 
+                            + ";" + Settings.EnrollViewFields 
+                            + ";" + Settings.EnrollAnonFields
+                            + ";EmergencyContactName"
+                            + ";EmergencyContactNumber"
+                            + ";EmergencyContactDetails"
+                            + ";WaverCurrent"
+                            + ";WaverExpireDate"
+                            + ";MemberShipCurrent"
+                            + ";MemberExpireDate"
+                            ;
                     }
                 }
                 else if (Request.IsAuthenticated)

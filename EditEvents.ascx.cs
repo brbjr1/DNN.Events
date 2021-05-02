@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.Events
                     Page.ClientScript.RegisterClientScriptBlock(cstype, csname, cstext, false);
                 }
 
-               
+
                 _editRecur = false;
                 if (!ReferenceEquals(Request.Params["EditRecur"], null))
                 {
@@ -137,7 +137,7 @@ namespace DotNetNuke.Modules.Events
 
                 trOwner.Visible = false;
                 if (IsModerator() && Settings.Ownerchangeallowed
-                    
+
                     //||
                     //PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName)
                     )
@@ -426,14 +426,14 @@ namespace DotNetNuke.Modules.Events
             grdEnrollment.Columns[6].HeaderText = Localization.GetString("EnrollNo", LocalResourceFile);
             grdEnrollment.Columns[7].HeaderText = Localization.GetString("EventStart", LocalResourceFile);
 
-            chkW1Sun.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int) DayOfWeek.Sunday];
-            chkW1Sun2.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int) DayOfWeek.Sunday];
-            chkW1Mon.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int) DayOfWeek.Monday];
-            chkW1Tue.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int) DayOfWeek.Tuesday];
-            chkW1Wed.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int) DayOfWeek.Wednesday];
-            chkW1Thu.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int) DayOfWeek.Thursday];
-            chkW1Fri.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int) DayOfWeek.Friday];
-            chkW1Sat.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int) DayOfWeek.Saturday];
+            chkW1Sun.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int)DayOfWeek.Sunday];
+            chkW1Sun2.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int)DayOfWeek.Sunday];
+            chkW1Mon.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int)DayOfWeek.Monday];
+            chkW1Tue.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int)DayOfWeek.Tuesday];
+            chkW1Wed.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int)DayOfWeek.Wednesday];
+            chkW1Thu.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int)DayOfWeek.Thursday];
+            chkW1Fri.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int)DayOfWeek.Friday];
+            chkW1Sat.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int)DayOfWeek.Saturday];
 
             cmbM1Period.Items.Clear();
             // Corrected a problem w/Every nth Week on a specific day with the following
@@ -657,7 +657,7 @@ namespace DotNetNuke.Modules.Events
                     objEventData.RRULE = "";
                     objEventData.EventName = objEvent.EventName;
                     objEventData.EventDesc = objEvent.EventDesc;
-                    objEventData.Importance = (EventRecurMasterInfo.Priority) objEvent.Importance;
+                    objEventData.Importance = (EventRecurMasterInfo.Priority)objEvent.Importance;
                     objEventData.Notify = objEvent.Notify;
                     objEventData.Approved = objEvent.Approved;
                     objEventData.Signups = objEvent.Signups;
@@ -1118,7 +1118,7 @@ namespace DotNetNuke.Modules.Events
             var iIndex = 0;
             var oDropDown = default(DropDownList);
 
-            oDropDown = (DropDownList) FindControl(cmbDropDown);
+            oDropDown = (DropDownList)FindControl(cmbDropDown);
             for (iIndex = 0; iIndex <= oDropDown.Items.Count - 1; iIndex++)
             {
                 if (oDropDown.Items[iIndex].Text == Convert.ToString(value))
@@ -1339,7 +1339,8 @@ namespace DotNetNuke.Modules.Events
 
             var myuser = cmbOwner.Items.FindByValue(Convert.ToString(ownerID));
 
-            if (myuser != null){
+            if (myuser != null)
+            {
                 myuser.Selected = true;
             }
         }
@@ -1397,14 +1398,14 @@ namespace DotNetNuke.Modules.Events
 
             var objEventEmailInfo = new EventEmailInfo();
             var objEventEmail = new EventEmails(PortalId, ModuleId, LocalResourceFile,
-                                                ((PageBase) Page).PageCulture.Name);
+                                                ((PageBase)Page).PageCulture.Name);
             objEventEmailInfo.TxtEmailSubject = txtEventEmailSubject.Text;
             objEventEmailInfo.TxtEmailBody = txtEventEmailBody.Text;
             objEventEmailInfo.TxtEmailFrom = txtEventEmailFrom.Text;
             foreach (DataGridItem tempLoopVar_item in grdEnrollment.Items)
             {
                 item = tempLoopVar_item;
-                if (((CheckBox) item.FindControl("chkSelect")).Checked || selected == false)
+                if (((CheckBox)item.FindControl("chkSelect")).Checked || selected == false)
                 {
                     objEnroll = _objCtlEventSignups.EventsSignupsGet(
                         Convert.ToInt32(grdEnrollment.DataKeys[item.ItemIndex]), ModuleId,
@@ -1746,7 +1747,7 @@ namespace DotNetNuke.Modules.Events
             }
 
             objEventRecurMaster.Importance =
-                (EventRecurMasterInfo.Priority) int.Parse(cmbImportance.SelectedItem.Value);
+                (EventRecurMasterInfo.Priority)int.Parse(cmbImportance.SelectedItem.Value);
 
             objEventRecurMaster.Signups = chkSignups.Checked;
             objEventRecurMaster.AllowAnonEnroll = chkAllowAnonEnroll.Checked;
@@ -1923,10 +1924,10 @@ namespace DotNetNuke.Modules.Events
                         objEvent.EventDesc = objEventRecurMaster.EventDesc;
                     }
 
-                    if (_editRecur && (int) objEvent.Importance == (int) objEventRMSave.Importance ||
+                    if (_editRecur && (int)objEvent.Importance == (int)objEventRMSave.Importance ||
                         !_editRecur)
                     {
-                        objEvent.Importance = (EventInfo.Priority) objEventRecurMaster.Importance;
+                        objEvent.Importance = (EventInfo.Priority)objEventRecurMaster.Importance;
                     }
 
                     if (_editRecur && objEvent.Signups == objEventRMSave.Signups || !_editRecur)
@@ -2242,7 +2243,7 @@ namespace DotNetNuke.Modules.Events
             }
             if (chkEventEmailChk.Checked)
             {
-                SendEventEmail((EventInfo) _lstEvents[0]);
+                SendEventEmail((EventInfo)_lstEvents[0]);
             }
         }
 
@@ -2448,7 +2449,7 @@ namespace DotNetNuke.Modules.Events
                 {
                     var objEventEmailInfo = new EventEmailInfo();
                     var objEventEmail = new EventEmails(PortalId, ModuleId, LocalResourceFile,
-                                                        ((PageBase) Page).PageCulture.Name);
+                                                        ((PageBase)Page).PageCulture.Name);
                     objEventEmailInfo.TxtEmailSubject = Settings.Templates.moderateemailsubject;
                     objEventEmailInfo.TxtEmailBody = Settings.Templates.moderateemailmessage;
                     objEventEmailInfo.TxtEmailFrom = Settings.StandardEmail;
@@ -2472,7 +2473,7 @@ namespace DotNetNuke.Modules.Events
         {
             var objEventEmailInfo = new EventEmailInfo();
             var objEventEmail = new EventEmails(PortalId, ModuleId, LocalResourceFile,
-                                                ((PageBase) Page).PageCulture.Name);
+                                                ((PageBase)Page).PageCulture.Name);
             objEventEmailInfo.TxtEmailSubject = txtEventEmailSubject.Text;
             objEventEmailInfo.TxtEmailBody = txtEventEmailBody.Text;
             objEventEmailInfo.TxtEmailFrom = txtEventEmailFrom.Text;
@@ -2512,6 +2513,7 @@ namespace DotNetNuke.Modules.Events
             var objSignup = default(EventSignupsInfo);
             var objCtlUser = new UserController();
             var noEnrolees = 0;
+            DotNetNuke.Security.Roles.RoleController rolesController = new DotNetNuke.Security.Roles.RoleController();
             foreach (EventSignupsInfo tempLoopVar_objSignup in objSignups)
             {
                 objSignup = tempLoopVar_objSignup;
@@ -2533,6 +2535,34 @@ namespace DotNetNuke.Modules.Events
                             string.Format("<a href=\"mailto:{0}?subject={1}\">{0}</a>", objSignup.Email,
                                           objEvent.EventName);
                         objEnrollListItem.EnrollPhone = objUser.Profile.Telephone;
+
+                        // bbehrens custom
+                        objEnrollListItem.EnrollEmergencyContactName = objUser.Profile.GetPropertyValue("emergency_contact_name");
+                        objEnrollListItem.EnrollEmergencyContactNumber = objUser.Profile.GetPropertyValue("emergency_contact_number");
+                        objEnrollListItem.EnrollEmergencyContactDetails = objUser.Profile.GetPropertyValue("Emergency_Contact_Details");
+
+                        var waverdate = objUser.Profile.GetPropertyValue("Completed_Waiver:");
+                        DateTime? dtwaverDate = null;
+                        if (!string.IsNullOrWhiteSpace(waverdate))
+                        {
+                            dtwaverDate = DateTime.Parse(waverdate).AddYears(1);
+                        }
+                        objEnrollListItem.EnrollWaverCurrent = dtwaverDate != null && dtwaverDate >= objEvent.EventTimeBegin ? "Yes" : "No";
+                        objEnrollListItem.EnrollWaverExpireDate = dtwaverDate != null ? ((DateTime)dtwaverDate).ToString("MM/dd/yyyy") : "";
+
+
+                        UserRoleInfo role = rolesController.GetUserRole(PortalId, objSignup.UserID, rolesController.GetRoleByName(0, "Paid Member").RoleID);
+
+                        DateTime? packMembershipexpiryDate = null;
+                        if (!ReferenceEquals(role, null))
+                        {
+                            packMembershipexpiryDate = role.ExpiryDate;
+                        }
+
+                        objEnrollListItem.EnrollMemberShipCurrent = packMembershipexpiryDate != null && packMembershipexpiryDate >= objEvent.EventTimeBegin ? "Yes" : "No";
+                        objEnrollListItem.MemberExpireDate = packMembershipexpiryDate != null ? ((DateTime)packMembershipexpiryDate).ToString("MM/dd/yyyy") : "";
+
+
                     }
                 }
                 else
@@ -2596,7 +2626,7 @@ namespace DotNetNuke.Modules.Events
         private void ShowHideEnrolleeColumns(EventInfo objEvent)
         {
             var txtColumns = EnrolmentColumns(objEvent, true);
-            var gvUsersToEnroll = (GridView) grdAddUser.FindControl("gvUsersToEnroll");
+            var gvUsersToEnroll = (GridView)grdAddUser.FindControl("gvUsersToEnroll");
             if (txtColumns.LastIndexOf("UserName", StringComparison.Ordinal) < 0)
             {
                 grdEnrollment.Columns[1].Visible = false;
@@ -2659,6 +2689,39 @@ namespace DotNetNuke.Modules.Events
             {
                 grdEnrollment.Columns[7].Visible = false;
             }
+
+            if (txtColumns.LastIndexOf("EmergencyContactName", StringComparison.Ordinal) < 0)
+            {
+                grdEnrollment.Columns[7].Visible = false;
+            }
+            if (txtColumns.LastIndexOf("EmergencyContactNumber", StringComparison.Ordinal) < 0)
+            {
+                grdEnrollment.Columns[8].Visible = false;
+            }
+            if (txtColumns.LastIndexOf("EmergencyContactDetails", StringComparison.Ordinal) < 0)
+            {
+                grdEnrollment.Columns[9].Visible = false;
+            }
+            if (txtColumns.LastIndexOf("WaverCurrent", StringComparison.Ordinal) < 0)
+            {
+                grdEnrollment.Columns[10].Visible = false;
+            }
+            if (txtColumns.LastIndexOf("WaverExpireDate", StringComparison.Ordinal) < 0)
+            {
+                grdEnrollment.Columns[11].Visible = false;
+            }
+            if (txtColumns.LastIndexOf("MemberShipCurrent", StringComparison.Ordinal) < 0)
+            {
+                grdEnrollment.Columns[12].Visible = false;
+            }
+            if (txtColumns.LastIndexOf("MemberExpireDate", StringComparison.Ordinal) < 0)
+            {
+                grdEnrollment.Columns[13].Visible = false;
+            }
+
+
+
+
         }
 
         private void AddRegUser(int inUserID, EventInfo objEvent)
@@ -2693,7 +2756,7 @@ namespace DotNetNuke.Modules.Events
                 {
                     var objEventEmailInfo = new EventEmailInfo();
                     var objEventEmail = new EventEmails(PortalId, ModuleId, LocalResourceFile,
-                                                        ((PageBase) Page).PageCulture.Name);
+                                                        ((PageBase)Page).PageCulture.Name);
                     objEventEmailInfo.TxtEmailSubject = Settings.Templates.txtEnrollMessageSubject;
                     objEventEmailInfo.TxtEmailBody = Settings.Templates.txtEnrollMessageAdded;
                     objEventEmailInfo.TxtEmailFrom = Settings.StandardEmail;
@@ -2793,7 +2856,7 @@ namespace DotNetNuke.Modules.Events
             foreach (DataGridItem tempLoopVar_item in grdEnrollment.Items)
             {
                 item = tempLoopVar_item;
-                if (((CheckBox) item.FindControl("chkSelect")).Checked)
+                if (((CheckBox)item.FindControl("chkSelect")).Checked)
                 {
                     var intSignupID = Convert.ToInt32(grdEnrollment.DataKeys[item.ItemIndex]);
                     objEnroll = _objCtlEventSignups.EventsSignupsGet(intSignupID, ModuleId, false);
@@ -2814,7 +2877,7 @@ namespace DotNetNuke.Modules.Events
                             var objEventEmailInfo = new EventEmailInfo();
                             var objEventEmail =
                                 new EventEmails(PortalId, ModuleId, LocalResourceFile,
-                                                ((PageBase) Page).PageCulture.Name);
+                                                ((PageBase)Page).PageCulture.Name);
                             objEventEmailInfo.TxtEmailSubject = Settings.Templates.txtEnrollMessageSubject;
                             objEventEmailInfo.TxtEmailBody = Settings.Templates.txtEnrollMessageDeleted;
                             objEventEmailInfo.TxtEmailFrom = Settings.StandardEmail;
@@ -2946,8 +3009,8 @@ namespace DotNetNuke.Modules.Events
             var xdisplayname = "";
             var ydisplayname = "";
 
-            xdisplayname = ((EventUser) x).DisplayName;
-            ydisplayname = ((EventUser) y).DisplayName;
+            xdisplayname = ((EventUser)x).DisplayName;
+            ydisplayname = ((EventUser)y).DisplayName;
             var c = new CaseInsensitiveComparer();
             return c.Compare(xdisplayname, ydisplayname);
         }

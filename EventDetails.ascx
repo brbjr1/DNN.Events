@@ -152,6 +152,30 @@
                     <asp:BoundColumn DataField="EnrollNo" HeaderText="EnrollNo">
                         <ItemStyle CssClass="DetailEnrollNo"></ItemStyle>
                     </asp:BoundColumn>
+
+                    <asp:BoundColumn DataField="EnrollEmergencyContactName" HeaderText="Emergency Contact Name">
+                        <ItemStyle CssClass="DetailEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+                    <asp:BoundColumn DataField="EnrollEmergencyContactNumber" HeaderText="Emergency Contact Number">
+                        <ItemStyle CssClass="DetailEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+                    <asp:BoundColumn DataField="EnrollEmergencyContactDetails" HeaderText="Emergency Contact Details">
+                        <ItemStyle CssClass="DetailEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+                    <asp:BoundColumn DataField="EnrollWaverCurrent" HeaderText="Waver Current">
+                        <ItemStyle CssClass="DetailEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+                    <asp:BoundColumn DataField="EnrollWaverExpireDate" HeaderText="Waver Expiration Date">
+                        <ItemStyle CssClass="DetailEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+                    <asp:BoundColumn DataField="EnrollMemberShipCurrent" HeaderText="MemberShip Current">
+                        <ItemStyle CssClass="DetailEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+                     <asp:BoundColumn DataField="MemberExpireDate" HeaderText="MemberShip Expiration Date">
+                        <ItemStyle CssClass="DetailEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+
+
                 </Columns>
             </asp:DataGrid>
         </div>
