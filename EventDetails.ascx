@@ -137,18 +137,15 @@
                     <asp:BoundColumn DataField="EnrollDisplayName" HeaderText="EnrollDisplayName">
                         <ItemStyle CssClass="DetailEnrollDisplay"></ItemStyle>
                     </asp:BoundColumn>
+                    <asp:BoundColumn DataField="EnrollFullName" HeaderText="Full Name">
+                        <ItemStyle CssClass="DetailEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
                     <asp:BoundColumn DataField="EnrollEmail" HeaderText="EnrollEmail">
                         <ItemStyle CssClass="DetailEnrollEmail"></ItemStyle>
                     </asp:BoundColumn>
                     <asp:BoundColumn DataField="EnrollPhone" HeaderText="EnrollPhone">
                         <ItemStyle CssClass="DetailEnrollPhone"></ItemStyle>
                     </asp:BoundColumn>
-                    <asp:TemplateColumn headerText="EnrollApproved">
-                        <ItemStyle CssClass="DetailEnrollApproved"></ItemStyle>
-                        <ItemTemplate>
-                            <asp:CheckBox ID="chkEnrollApproved" runat="server" Enabled="false" Checked='<%# DataBinder.Eval(Container.DataItem, "EnrollApproved") %>'/>
-                        </ItemTemplate>
-                    </asp:TemplateColumn>
                     <asp:BoundColumn DataField="EnrollNo" HeaderText="EnrollNo">
                         <ItemStyle CssClass="DetailEnrollNo"></ItemStyle>
                     </asp:BoundColumn>
@@ -174,12 +171,12 @@
                      <asp:BoundColumn DataField="MemberExpireDate" HeaderText="MemberShip Expiration Date">
                         <ItemStyle CssClass="DetailEnrollDisplay"></ItemStyle>
                     </asp:BoundColumn>
-
-
+                    
+                    
                 </Columns>
             </asp:DataGrid>
         </div>
-        <asp:LinkButton ID="cmdvEventSignups" CssClass="" runat="server" resourcekey="cmdvEventSignups" causesvalidation="False" OnClick="cmdvEventSignups_Click"/>
+        <asp:LinkButton ID="cmdvEventSignups" CssClass="CommandButton" runat="server" resourcekey="cmdvEventSignupsDownload" causesvalidation="False" OnClick="cmdvEventSignups_Click"/>
     </div>
     <div id="divEventDetails4" runat="server" class="DetailClear DetailEventDetails4"/>
     <div class="DetailClear"></div>

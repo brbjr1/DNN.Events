@@ -273,4 +273,28 @@
   <data name="cmdvEventSignupsTooltip.Text" xml:space="preserve">
     <value>Download the enrollees for this event as an XML file</value>
   </data>
+  <data name="FullName.Header" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="EmContactName.Header" xml:space="preserve">
+    <value>Emergency Contact Name</value>
+  </data>
+  <data name="EmContactPhone.Header" xml:space="preserve">
+    <value>Emergency Contact Number</value>
+  </data>
+  <data name="EmContactDetails.Header" xml:space="preserve">
+    <value>Emergency Contact Details</value>
+  </data>
+  <data name="WaiverCurrent.Header" xml:space="preserve">
+    <value>Waiver Current</value>
+  </data>
+  <data name="WaiverExpireDate.Header" xml:space="preserve">
+    <value>Waiver Expiration Date</value>
+  </data>
+  <data name="MembershipCurrent.Header" xml:space="preserve">
+    <value>Membership Current</value>
+  </data>
+  <data name="MembershipExpireDate.Header" xml:space="preserve">
+    <value>Membership Expiration Date</value>
+  </data>
 </root>

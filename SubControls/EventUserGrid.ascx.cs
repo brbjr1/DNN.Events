@@ -1,7 +1,7 @@
 #region Copyright
 
 // 
-// DotNetNuke® - http://www.dotnetnuke.com
+// DotNetNukeï¿½ - http://www.dotnetnuke.com
 // Copyright (c) 2002-2018
 // by DotNetNuke Corporation
 // 
@@ -142,10 +142,12 @@ namespace DotNetNuke.Modules.Events
             {
                 gvUsersToEnroll.Columns[2].HeaderText = localText;
             }
+            // Our grid now has: 0 Select, 1 Username, 2 DisplayName, 3 FullName, 4 Email
+            gvUsersToEnroll.Columns[3].HeaderText = "Full Name";
             localText = Localization.GetString("Emailaddress.Header", LocalResourceFile);
-            if (!string.IsNullOrEmpty(localText))
+            if (!string.IsNullOrEmpty(localText) && gvUsersToEnroll.Columns.Count > 4)
             {
-                gvUsersToEnroll.Columns[3].HeaderText = localText;
+                gvUsersToEnroll.Columns[4].HeaderText = localText;
             }
         }
 
@@ -202,17 +204,29 @@ namespace DotNetNuke.Modules.Events
                 roleName = ddEnrollRoles.SelectedItem.Text;
             }
 
+            // Preserve selection
+            var requestedValue = string.IsNullOrEmpty(searchField) ? dropdownFilterItem.Value : searchField;
+
             dropdownFilterItem.Items.Clear();
             dropdownFilterItem.Items.Add( new ListItem(Localization.GetString("dropdownFilterItem00", LocalResourceFile), "0"));
             dropdownFilterItem.Items.Add( new ListItem(Localization.GetString("dropdownFilterItem02", LocalResourceFile), "2"));
-			
+            
             if (roleName == regRoleName)
             {
                 dropdownFilterItem.Items.Add( new ListItem(Localization.GetString("dropdownFilterItem01", LocalResourceFile), "1"));
             }
 
+            if (!string.IsNullOrEmpty(requestedValue) && dropdownFilterItem.Items.FindByValue(requestedValue) != null)
+            {
+                dropdownFilterItem.Value = requestedValue;
+            }
+            else
+            {
+                dropdownFilterItem.Value = "0";
+            }
+
             var tmpUsers = default(ArrayList);
-            if (roleName != regRoleName || searchField != "1")
+            if (roleName != regRoleName || dropdownFilterItem.Value != "1")
             {
                 tmpUsers = objCtlRole.GetUsersByRoleName(PortalId, roleName);
             }
@@ -229,19 +243,20 @@ namespace DotNetNuke.Modules.Events
             {
                 foreach (UserInfo objUser in tmpUsers)
                 {
-                    switch (searchField)
+                    var text = searchText ?? string.Empty;
+                    switch (dropdownFilterItem.Value)
                     {
-                        case "0": //username
-                            if (objUser.Username.Substring(0, searchText.Length).ToLower() == searchText.ToLower())
+                        case "0": // username
+                            if (!string.IsNullOrEmpty(objUser.Username) && objUser.Username.StartsWith(text, StringComparison.OrdinalIgnoreCase))
                             {
                                 UserAdd(objUser, lstSignups);
                             }
                             break;
-                        case "1": //Groupname
+                        case "1": // group name (no per-user filter)
                             UserAdd(objUser, lstSignups);
                             break;
-                        case "2": //Lastname
-                            if (objUser.LastName.Substring(0, searchText.Length).ToLower() == searchText.ToLower())
+                        case "2": // last name
+                            if (!string.IsNullOrEmpty(objUser.LastName) && objUser.LastName.StartsWith(text, StringComparison.OrdinalIgnoreCase))
                             {
                                 UserAdd(objUser, lstSignups);
                             }
@@ -262,8 +277,30 @@ namespace DotNetNuke.Modules.Events
                 gvUsersToEnroll.Visible = false;
                 cmdSelectedAddUser.Visible = false;
             }
-            gvUsersToEnroll.DataSource = Users;
+            // Project users into an anonymous type that exposes FullName for the grid
+            var data = new System.Collections.ArrayList();
+            foreach (UserInfo u in Users)
+            {
+                data.Add(new EventUserRow
+                {
+                    UserID = u.UserID,
+                    UserName = u.Username,
+                    DisplayName = u.DisplayName,
+                    FullName = string.Format("{0} {1}", u.FirstName, u.LastName).Trim(),
+                    Email = u.Email
+                });
+            }
+            gvUsersToEnroll.DataSource = data;
             gvUsersToEnroll.DataBind();
+        }
+
+        private class EventUserRow
+        {
+            public int UserID { get; set; }
+            public string UserName { get; set; }
+            public string DisplayName { get; set; }
+            public string FullName { get; set; }
+            public string Email { get; set; }
         }
 
         private void UserAdd(UserInfo inUser, ArrayList lstSignups)

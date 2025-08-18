@@ -28,7 +28,11 @@
                 <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
                 <ItemStyle CssClass="EditEnrollDisplay"></ItemStyle>
             </asp:BoundField>
-            <asp:BoundField DataField="email" HeaderText="Emailaddress" ReadOnly="True">
+            <asp:BoundField DataField="FullName" HeaderText="Full Name" ReadOnly="True">
+                <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
+                <ItemStyle CssClass="EditEnrollDisplay"></ItemStyle>
+            </asp:BoundField>
+            <asp:BoundField DataField="Email" HeaderText="Emailaddress" ReadOnly="True">
                 <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
                 <ItemStyle CssClass="EditEnrollEmail"></ItemStyle>
             </asp:BoundField>
