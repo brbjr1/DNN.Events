@@ -166,7 +166,7 @@
     <value>You are not enrolled for this event...&lt;br&gt;press this link to enroll!</value>
   </data>
   <data name="YouAreEnrolledForThisEvent.Text" xml:space="preserve">
-    <value>You are enrolled and approved for this event!</value>
+    <value>You are enrolled for this event!&lt;br&gt; &lt;font color='black'&gt;Please make sure your emergency contact information is up to date!!!&lt;/font&gt;&lt;br&gt; &lt;a href='/MyProfile.aspx' class='CommandButton'&gt;Click here to update your emergency contact information&lt;br&gt;</value>
   </data>
   <data name="EnrolledButNotApproved.Text" xml:space="preserve">
     <value>You are enrolled for this event, but not yet approved!</value>

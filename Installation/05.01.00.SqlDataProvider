@@ -97,7 +97,6 @@ GO
 UPDATE {databaseOwner}{objectQualifier}EventsNotification 
    SET TabID = (Select top 1 TabID from {databaseOwner}{objectQualifier}TabModules where ModuleID = {databaseOwner}{objectQualifier}EventsNotification.ModuleID)
 WHERE TabID = 1
-  AND ModuleId in (Select ModuleId from {databaseOwner}{objectQualifier}Modules WHERE IsDeleted = 0)
 
 
 /************************************************************/

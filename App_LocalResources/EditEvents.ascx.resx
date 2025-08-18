@@ -502,16 +502,16 @@
     <value>Reminder Settings</value>
   </data>
   <data name="lblCustomField1.Text" xml:space="preserve">
-    <value>Custom Field 1:</value>
+    <value>Photo Link</value>
   </data>
   <data name="lblCustomField1.Help" xml:space="preserve">
-    <value>Enter text for Custom Field 1</value>
+    <value>Enter URL for photos</value>
   </data>
   <data name="lblCustomField2.Text" xml:space="preserve">
-    <value>Custom Field 2:</value>
+    <value>Report Link</value>
   </data>
   <data name="lblCustomField2.Help" xml:space="preserve">
-    <value>Enter text for Custom Field 2</value>
+    <value>Enter URL for report</value>
   </data>
   <data name="lblTimeBefore.Help" xml:space="preserve">
     <value>The amount of time before the event the notification will be sent out</value>

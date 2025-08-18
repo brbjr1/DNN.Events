@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+	<!-- 
+    Microsoft ResX Schema 
+    
+    Version 1.3
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">1.3</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1">this is my long string</data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        [base64 mime encoded serialized .NET Framework object]
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        [base64 mime encoded string representing a byte array form of the .NET Framework object]
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used forserialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<data name="EventSettings.Text">
+		<value>Event Settings</value>
+	</data>
+	<data name="ImageSettings.Text">
+		<value>Image Settings</value>
+	</data>
+	<data name="RecurringSettings.Text">
+		<value>Recurring Settings</value>
+	</data>
+	<data name="EnrollmentSettings.Text">
+		<value>Enrollment Settings</value>
+	</data>
+	<data name="plTitle.Text">
+		<value>Title:</value>
+	</data>
+	<data name="plStartDateTime.Text">
+		<value>Start Date/Time:</value>
+	</data>
+	<data name="plEndDateTime.Text">
+		<value>End Date/Time:</value>
+	</data>
+	<data name="plImportance.Text">
+		<value>Importance:</value>
+	</data>
+	<data name="plCategory.Text">
+		<value>Category:</value>
+	</data>
+	<data name="plLocation.Text">
+		<value>Location:</value>
+	</data>
+	<data name="plNotes.Text">
+		<value>Notes:</value>
+	</data>
+	<data name="plDisplayImage.Text">
+		<value>Display Image?</value>
+	</data>
+	<data name="plImageURL.Text">
+		<value>Image URL:</value>
+	</data>
+	<data name="plWidth.Text">
+		<value>Width:</value>
+	</data>
+	<data name="plHeight.Text">
+		<value>Height:</value>
+	</data>
+	<data name="plOneTimeEvent.Text">
+		<value>One Time Event</value>
+	</data>
+	<data name="plRecurEndDate.Text">
+		<value>Repeat until date:</value>
+	</data>
+	<data name="plDayRepeat.Text">
+		<value>Repeat Daily:</value>
+	</data>
+	<data name="plWeekRepeat.Text">
+		<value>Repeat Weekly:</value>
+	</data>
+	<data name="plMonthRepeat.Text">
+		<value>Repeat Monthly:</value>
+	</data>
+	<data name="plInMonth.Text">
+		<value>Repeat On Month:</value>
+	</data>
+	<data name="plAnnualRepeat.Text">
+		<value>Repeat Annually</value>
+	</data>
+	<data name="plEvery1.Text">
+		<value>Repeated every</value>
+	</data>
+	<data name="plEvery2.Text">
+		<value>Repeated every</value>
+	</data>
+	<data name="plWeekOn.Text">
+		<value>week on:</value>
+	</data>
+	<data name="plRepeatedOn1.Text">
+		<value>Repeated on</value>
+	</data>
+	<data name="plRepeatedOn2.Text">
+		<value>Repeated on</value>
+	</data>
+	<data name="plOfTheMonth.Text">
+		<value>of the month</value>
+	</data>
+	<data name="plForEvery.Text">
+		<value>for every</value>
+	</data>
+	<data name="plMonth.Text">
+		<value>month</value>
+	</data>
+	<data name="plRepeatOnDate.Text">
+		<value>repeat on date</value>
+	</data>
+	<data name="plAllowEnrollment.Text">
+		<value>Allow Enrollment?</value>
+	</data>
+	<data name="plTypeOfEnrollment.Text">
+		<value>Type of Enrollment</value>
+	</data>
+	<data name="plMaxEnrollment.Text">
+		<value>Max. Enrollment:</value>
+	</data>
+	<data name="plEnrollmentRole.Text">
+		<value>Enrollment Role:</value>
+	</data>
+	<data name="plFree.Text">
+		<value>Free</value>
+	</data>
+	<data name="plPaidFee.Text">
+		<value>Paid  Fee:</value>
+	</data>
+	<data name="plPayPalAccount.Text">
+		<value>PayPal Account:</value>
+	</data>
+	<data name="plCurrentlyEnrolled.Text">
+		<value>(unlimited enrollment = 0)   Currently Enrolled:</value>
+	</data>
+	<data name="plSelectNone.Text">
+		<value>(select "None" for All Registered)</value>
+	</data>
+	<data name="plEnrolledUsers.Text">
+		<value>Enrolled Users:</value>
+	</data>
+	<data name="plEmailEnrolledUsers.Text">
+		<value>Email Enrolled Users</value>
+	</data>
+	<data name="plEmailSubject.Text">
+		<value>Email Subject:</value>
+	</data>
+	<data name="plEmailMessage.Text">
+		<value>Email Message:</value>
+	</data>
+	<data name="plAttachEvent.Text">
+		<value>Attach Event?</value>
+	</data>
+	<data name="plCreatedBy.Text">
+		<value>Created by:</value>
+	</data>
+	<data name="plOn.Text">
+		<value>on</value>
+	</data>
+	<data name="lnkSelectedEmail.Text">
+		<value>Email Selected Enrolled Users</value>
+	</data>
+	<data name="lnkEmail.Text">
+		<value>Email All Enrolled Users</value>
+	</data>
+	<data name="lnkSelectedDelete.Text">
+		<value>Delete Selected Enrolled Users</value>
+	</data>
+	<data name="updateButton.Text">
+		<value>Update</value>
+	</data>
+	<data name="cancelButton.Text">
+		<value>Cancel</value>
+	</data>
+	<data name="deleteButton.Text">
+		<value>Delete</value>
+	</data>
+	<data name="valRequiredTitle.Text">
+		<value>Title Required</value>
+	</data>
+	<data name="valConflict.Text">
+		<value>Conflict with existing Event! Change Date/Time</value>
+	</data>
+	<data name="valInvalidStartDate.Text">
+		<value>Start Date is Required</value>
+	</data>
+	<data name="valBadStartDate.Text">
+		<value>Invalid Start Date</value>
+	</data>
+	<data name="valBadEndDate.Text">
+		<value>End Date is Required</value>
+	</data>
+	<data name="valInvalidEndDate.Text">
+		<value>Invalid End Date</value>
+	</data>
+	<data name="valInvalidEndTime.Text">
+		<value>Invalid End Time</value>
+	</data>
+	<data name="valWidth.Text">
+		<value>Width must be a valid Integer or Blank</value>
+	</data>
+	<data name="valHeight.Text">
+		<value>Height must be a valid Integer or Blank</value>
+	</data>
+	<data name="valRecurBadEndDate.Text">
+		<value>Invalid End Date</value>
+	</data>
+	<data name="valInvalidRecurEndDate">
+		<value>End Date Cannot be Prior to Start Date</value>
+	</data>
+	<data name="valW1Day.Text">
+		<value>Please select day of the week!</value>
+	</data>
+	<data name="valBadFee.Text">
+		<value>Fee required for Paid Enrollment</value>
+	</data>
+	<data name="valPayPalAccount.Text">
+		<value>PayPal Account required for Paid Enrollment</value>
+	</data>
+	<data name="ConfirmEventDelete.Text">
+		<value>Are You Sure You Wish To Delete This Record?</value>
+	</data>
+	<data name="ConfirmSendToAllEnrolled.Text">
+		<value>Are You Sure You Wish To Send an Email to ALL Enrolled Users?</value>
+	</data>
+	<data name="ConfirmSendToAllSelected.Text">
+		<value>Are You Sure You Wish To Send an Email to SELECTED Enrolled Users?</value>
+	</data>
+	<data name="ConfirmDeleteSelected.Text">
+		<value>Are You Sure You Wish To Delete to SELECTED Enrolled Users?</value>
+	</data>
+	<data name="plModerated.Text">
+		<value>(Moderated)</value>
+	</data>
+	<data name="Low.Text">
+		<value>Low</value>
+	</data>
+	<data name="Normal.Text">
+		<value>Normal</value>
+	</data>
+	<data name="Enrollee.Text">
+		<value>Enrollee</value>
+	</data>
+	<data name="Phone.Text">
+		<value>Phone</value>
+	</data>
+	<data name="Approved.Text">
+		<value>Approved</value>
+	</data>
+	<data name="Select.Text">
+		<value>Select</value>
+	</data>
+	<data name="pllMonth.Text">
+		<value>month</value>
+	</data>
+	<data name="None.Text">
+		<value>None</value>
+	</data>
+	<data name="Days.Text">
+		<value>Day(s)</value>
+	</data>
+	<data name="Weeks.Text">
+		<value>Week(s)</value>
+	</data>
+	<data name="Months.Text">
+		<value>Month(s)</value>
+	</data>
+	<data name="Years.Text">
+		<value>Year(s)</value>
+	</data>
+	<data name="01.Text">
+		<value>1st</value>
+	</data>
+	<data name="02.Text">
+		<value>2nd</value>
+	</data>
+	<data name="03.Text">
+		<value>3rd</value>
+	</data>
+	<data name="04.Text">
+		<value>4th</value>
+	</data>
+	<data name="05.Text">
+		<value>5th</value>
+	</data>
+	<data name="06.Text">
+		<value>6th</value>
+	</data>
+	<data name="07.Text">
+		<value>7th</value>
+	</data>
+	<data name="08.Text">
+		<value>8th</value>
+	</data>
+	<data name="09.Text">
+		<value>9th</value>
+	</data>
+	<data name="10.Text">
+		<value>10th</value>
+	</data>
+	<data name="11.Text">
+		<value>11th</value>
+	</data>
+	<data name="12.Text">
+		<value>12th</value>
+	</data>
+	<data name="13.Text">
+		<value>13th</value>
+	</data>
+	<data name="14.Text">
+		<value>14th</value>
+	</data>
+	<data name="15.Text">
+		<value>15th</value>
+	</data>
+	<data name="16.Text">
+		<value>16th</value>
+	</data>
+	<data name="17.Text">
+		<value>17th</value>
+	</data>
+	<data name="18.Text">
+		<value>18th</value>
+	</data>
+	<data name="19.Text">
+		<value>19th</value>
+	</data>
+	<data name="20.Text">
+		<value>20th</value>
+	</data>
+	<data name="21.Text">
+		<value>21st</value>
+	</data>
+	<data name="22.Text">
+		<value>22nd</value>
+	</data>
+	<data name="23.Text">
+		<value>23rd</value>
+	</data>
+	<data name="24.Text">
+		<value>24th</value>
+	</data>
+	<data name="25.Text">
+		<value>25th</value>
+	</data>
+	<data name="26.Text">
+		<value>26th</value>
+	</data>
+	<data name="27.Text">
+		<value>27th</value>
+	</data>
+	<data name="28.Text">
+		<value>28th</value>
+	</data>
+	<data name="29.Text">
+		<value>29th</value>
+	</data>
+	<data name="30.Text">
+		<value>30th</value>
+	</data>
+	<data name="31.Text">
+		<value>31st</value>
+	</data>
+	<data name="ControlTitle_edit.Text">
+		<value>Edit Event</value>
+	</data>
+	<data name="Attachment.Text">
+		<value>The attachment is a file that can load the event into Microsoft Outlook and other Desktop Calendar Applications!&lt;br&gt;&lt;br&gt;</value>
+	</data>
+	<data name="EnrollMessage.Text">
+		<value>The following is a message related to your enrollment in Event:  {0} &lt;br&gt;on: {1} at {2}&lt;br&gt;&lt;br&gt;</value>
+	</data>
+	<data name="lblDefaultUserTZ.Text">
+		<value>(Default - User Time Zone)</value>
+	</data>
+	<data name="lblTimeZone.Text">
+		<value>Time Zone:</value>
+	</data>
+	<data name="lblSendReminder.Text">
+		<value>Send Reminder:</value>
+	</data>
+	<data name="Seconds.Text">
+		<value>Seconds</value>
+	</data>
+	<data name="Minutes.Text">
+		<value>Minutes</value>
+	</data>
+	<data name="Hours.Text">
+		<value>Hours</value>
+	</data>
+	<data name="Yes.Text">
+		<value>Yes</value>
+	</data>
+	<data name="lblBeforeEvent.Text">
+		<value>before event is to occur</value>
+	</data>
+	<data name="NotificationSettings.Text">
+		<value>Notification Settings</value>
+	</data>
+	<data name="lblEmailTo.Text">
+		<value>Email To:</value>
+	</data>
+	<data name="lblBodyMessage.Text">
+		<value>Prepend Body Message:</value>
+	</data>
+	<data name="High.Text">
+		<value>High</value>
+	</data>
+	<data name="lblEmailToComment.Text">
+		<value>(Separate email addresses by a comma.)</value>
+	</data>
+	<data name="First.Text">
+		<value>First</value>
+	</data>
+	<data name="Second.Text">
+		<value>Second</value>
+	</data>
+	<data name="Third.Text">
+		<value>Third</value>
+	</data>
+	<data name="Fourth.Text">
+		<value>Fourth</value>
+	</data>
+	<data name="Last.Text">
+		<value>Last</value>
+	</data>
+</root>

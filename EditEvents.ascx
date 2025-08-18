@@ -532,6 +532,36 @@
                             </asp:Label>
                         </ItemTemplate>
                     </asp:TemplateColumn>
+
+                     <asp:BoundColumn DataField="EnrollEmergencyContactName" HeaderText="Emergency Contact Name">
+                         <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
+                        <ItemStyle CssClass="EditEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+                    <asp:BoundColumn DataField="EnrollEmergencyContactNumber" HeaderText="Emergency Contact Number">
+                        <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
+                        <ItemStyle CssClass="EditEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+                    <asp:BoundColumn DataField="EnrollEmergencyContactDetails" HeaderText="Emergency Contact Details">
+                        <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
+                        <ItemStyle CssClass="EditEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+                    <asp:BoundColumn DataField="EnrollWaverCurrent" HeaderText="Waver Current">
+                        <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
+                        <ItemStyle CssClass="EditEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+                    <asp:BoundColumn DataField="EnrollWaverExpireDate" HeaderText="Waver Expiration Date">
+                        <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
+                        <ItemStyle CssClass="EditEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+                    <asp:BoundColumn DataField="EnrollMemberShipCurrent" HeaderText="MemberShip Current">
+                        <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
+                        <ItemStyle CssClass="EditEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+                     <asp:BoundColumn DataField="MemberExpireDate" HeaderText="MemberShip Expiration Date">
+                         <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
+                        <ItemStyle CssClass="EditEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
+
                 </Columns>
             </asp:DataGrid>
             <dnn:CommandButton id="lnkSelectedEmail" IconKey="Email" resourcekey="lnkSelectedEmail" runat="server" cssclass="CommandButton"/>&nbsp;&nbsp;
