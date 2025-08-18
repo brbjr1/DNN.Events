@@ -2646,6 +2646,11 @@ namespace Components
         public string EnrollDisplayName { get; set; }
 
         /// <summary>
+        ///     Gets or sets the full name of the enrolled user.
+        /// </summary>
+        public string EnrollFullName { get; set; }
+
+        /// <summary>
         ///     Gets or sets the enroll email.
         /// </summary>
         /// <value>The enroll email.</value>

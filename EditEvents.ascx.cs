@@ -416,15 +416,20 @@ namespace DotNetNuke.Modules.Events
             txtSubject.Text = Settings.Templates.txtSubject;
             txtReminder.Text = Settings.Templates.txtMessage;
 
+            // Keep previous index-based header setup to avoid missing helpers here
             grdEnrollment.Columns[0].HeaderText = Localization.GetString("Select", LocalResourceFile);
             grdEnrollment.Columns[1].HeaderText = Localization.GetString("EnrollUserName", LocalResourceFile);
-            grdEnrollment.Columns[2].HeaderText =
-                Localization.GetString("EnrollDisplayName", LocalResourceFile);
-            grdEnrollment.Columns[3].HeaderText = Localization.GetString("EnrollEmail", LocalResourceFile);
-            grdEnrollment.Columns[4].HeaderText = Localization.GetString("EnrollPhone", LocalResourceFile);
-            grdEnrollment.Columns[5].HeaderText = Localization.GetString("EnrollApproved", LocalResourceFile);
-            grdEnrollment.Columns[6].HeaderText = Localization.GetString("EnrollNo", LocalResourceFile);
-            grdEnrollment.Columns[7].HeaderText = Localization.GetString("EventStart", LocalResourceFile);
+            grdEnrollment.Columns[2].HeaderText = Localization.GetString("EnrollDisplayName", LocalResourceFile);
+            // Column 3 is now Full Name (markup); leave as-is
+            grdEnrollment.Columns[4].HeaderText = Localization.GetString("EnrollEmail", LocalResourceFile);
+            grdEnrollment.Columns[5].HeaderText = Localization.GetString("EnrollPhone", LocalResourceFile);
+            // Column 6 is now Emergency Contact Name (markup); leave as-is
+            // Column 7 is now Emergency Contact Number (markup); leave as-is
+            // Column 8 is now Emergency Contact Details (markup); leave as-is
+            // Column 9 is now Waver Current (markup); leave as-is
+            // Column 10 is now Waver Expiration Date (markup); leave as-is
+            // Column 11 is now MemberShip Current (markup); leave as-is
+            // Column 12 is now MemberShip Expiration Date (markup); leave as-is
 
             chkW1Sun.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int)DayOfWeek.Sunday];
             chkW1Sun2.Text = culture.DateTimeFormat.AbbreviatedDayNames[(int)DayOfWeek.Sunday];
@@ -2496,6 +2501,21 @@ namespace DotNetNuke.Modules.Events
 
         private void BuildEnrolleeGrid(EventInfo objEvent)
         {
+            // helper functions copied from view control
+            int FindBoundColumnIndexLocal(string dataField)
+            {
+                for (var i = 0; i < grdEnrollment.Columns.Count; i++)
+                {
+                    var bound = grdEnrollment.Columns[i] as BoundColumn;
+                    if (bound != null && string.Equals(bound.DataField, dataField, StringComparison.Ordinal))
+                    {
+                        return i;
+                    }
+                }
+                return -1;
+            }
+            // Ensure column order visibility is consistent: DisplayName, FullName, Email, Phone
+            // (No anonymous-user restriction here; this is the editor view.)
             var objSignups = default(ArrayList);
             // Refresh Enrollment Grid
             if (_editRecur)
@@ -2531,6 +2551,7 @@ namespace DotNetNuke.Modules.Events
                     if (!ReferenceEquals(objUser, null))
                     {
                         objEnrollListItem.EnrollUserName = objUser.Username;
+                        objEnrollListItem.EnrollFullName = string.Format("{0} {1}", objUser.FirstName, objUser.LastName).Trim();
                         objEnrollListItem.EnrollEmail =
                             string.Format("<a href=\"mailto:{0}?subject={1}\">{0}</a>", objSignup.Email,
                                           objEvent.EventName);
@@ -2569,27 +2590,32 @@ namespace DotNetNuke.Modules.Events
                 {
                     objEnrollListItem.EnrollDisplayName = objSignup.AnonName;
                     objEnrollListItem.EnrollUserName = Localization.GetString("AnonUser", LocalResourceFile);
+                    objEnrollListItem.EnrollFullName = objSignup.AnonName;
                     objEnrollListItem.EnrollEmail =
                         string.Format("<a href=\"mailto:{0}?subject={1}\">{0}</a>", objSignup.AnonEmail,
                                       objEvent.EventName);
                     objEnrollListItem.EnrollPhone = objSignup.AnonTelephone;
+                    // Set empty values for emergency contact, waiver, and membership fields for anonymous users
+                    objEnrollListItem.EnrollEmergencyContactName = string.Empty;
+                    objEnrollListItem.EnrollEmergencyContactNumber = string.Empty;
+                    objEnrollListItem.EnrollEmergencyContactDetails = string.Empty;
+                    objEnrollListItem.EnrollWaverCurrent = string.Empty;
+                    objEnrollListItem.EnrollWaverExpireDate = string.Empty;
+                    objEnrollListItem.EnrollMemberShipCurrent = string.Empty;
+                    objEnrollListItem.MemberExpireDate = string.Empty;
                 }
                 objEnrollListItem.SignupID = objSignup.SignupID;
-                objEnrollListItem.EnrollApproved = objSignup.Approved;
-                objEnrollListItem.EnrollNo = objSignup.NoEnrolees;
-                objEnrollListItem.EnrollTimeBegin = objSignup.EventTimeBegin;
                 eventEnrollment.Add(objEnrollListItem);
             }
 
             if (eventEnrollment.Count > 0)
             {
-                grdEnrollment.DataSource = eventEnrollment;
-                grdEnrollment.DataBind();
-                tblEventEmail.Attributes.Add("style", "display:block; width:100%");
                 lblEnrolledUsers.Visible = true;
                 grdEnrollment.Visible = true;
-                lnkSelectedDelete.Visible = true;
-                lnkSelectedEmail.Visible = true;
+                grdEnrollment.DataSource = eventEnrollment;
+                grdEnrollment.DataBind();
+                // Ensure the Email Details section is visible when there are enrollees
+                tblEventEmail.Attributes.Add("style", "display:block; width:100%");
             }
             else
             {
@@ -2647,25 +2673,25 @@ namespace DotNetNuke.Modules.Events
                 grdEnrollment.Columns[2].Visible = true;
                 gvUsersToEnroll.Columns[2].Visible = true;
             }
-            if (txtColumns.LastIndexOf("Email", StringComparison.Ordinal) < 0)
+            if (txtColumns.LastIndexOf("FullName", StringComparison.Ordinal) < 0)
             {
                 grdEnrollment.Columns[3].Visible = false;
-                gvUsersToEnroll.Columns[3].Visible = false;
             }
             else
             {
                 grdEnrollment.Columns[3].Visible = true;
-                gvUsersToEnroll.Columns[3].Visible = true;
             }
-            if (txtColumns.LastIndexOf("Phone", StringComparison.Ordinal) < 0)
+            if (txtColumns.LastIndexOf("Email", StringComparison.Ordinal) < 0)
             {
                 grdEnrollment.Columns[4].Visible = false;
+                gvUsersToEnroll.Columns[3].Visible = false;
             }
             else
             {
                 grdEnrollment.Columns[4].Visible = true;
+                gvUsersToEnroll.Columns[3].Visible = true;
             }
-            if (txtColumns.LastIndexOf("Approved", StringComparison.Ordinal) < 0)
+            if (txtColumns.LastIndexOf("Phone", StringComparison.Ordinal) < 0)
             {
                 grdEnrollment.Columns[5].Visible = false;
             }
@@ -2673,7 +2699,7 @@ namespace DotNetNuke.Modules.Events
             {
                 grdEnrollment.Columns[5].Visible = true;
             }
-            if (txtColumns.LastIndexOf("Qty", StringComparison.Ordinal) < 0)
+            if (txtColumns.LastIndexOf("EmergencyContactName", StringComparison.Ordinal) < 0)
             {
                 grdEnrollment.Columns[6].Visible = false;
             }
@@ -2681,47 +2707,54 @@ namespace DotNetNuke.Modules.Events
             {
                 grdEnrollment.Columns[6].Visible = true;
             }
-            if (_editRecur)
+            if (txtColumns.LastIndexOf("EmergencyContactNumber", StringComparison.Ordinal) < 0)
             {
-                grdEnrollment.Columns[7].Visible = true;
+                grdEnrollment.Columns[7].Visible = false;
             }
             else
             {
-                grdEnrollment.Columns[7].Visible = false;
-            }
-
-            if (txtColumns.LastIndexOf("EmergencyContactName", StringComparison.Ordinal) < 0)
-            {
-                grdEnrollment.Columns[7].Visible = false;
-            }
-            if (txtColumns.LastIndexOf("EmergencyContactNumber", StringComparison.Ordinal) < 0)
-            {
-                grdEnrollment.Columns[8].Visible = false;
+                grdEnrollment.Columns[7].Visible = true;
             }
             if (txtColumns.LastIndexOf("EmergencyContactDetails", StringComparison.Ordinal) < 0)
             {
-                grdEnrollment.Columns[9].Visible = false;
+                grdEnrollment.Columns[8].Visible = false;
+            }
+            else
+            {
+                grdEnrollment.Columns[8].Visible = true;
             }
             if (txtColumns.LastIndexOf("WaverCurrent", StringComparison.Ordinal) < 0)
             {
-                grdEnrollment.Columns[10].Visible = false;
+                grdEnrollment.Columns[9].Visible = false;
+            }
+            else
+            {
+                grdEnrollment.Columns[9].Visible = true;
             }
             if (txtColumns.LastIndexOf("WaverExpireDate", StringComparison.Ordinal) < 0)
             {
-                grdEnrollment.Columns[11].Visible = false;
+                grdEnrollment.Columns[10].Visible = false;
+            }
+            else
+            {
+                grdEnrollment.Columns[10].Visible = true;
             }
             if (txtColumns.LastIndexOf("MemberShipCurrent", StringComparison.Ordinal) < 0)
             {
-                grdEnrollment.Columns[12].Visible = false;
+                grdEnrollment.Columns[11].Visible = false;
+            }
+            else
+            {
+                grdEnrollment.Columns[11].Visible = true;
             }
             if (txtColumns.LastIndexOf("MemberExpireDate", StringComparison.Ordinal) < 0)
             {
-                grdEnrollment.Columns[13].Visible = false;
+                grdEnrollment.Columns[12].Visible = false;
             }
-
-
-
-
+            else
+            {
+                grdEnrollment.Columns[12].Visible = true;
+            }
         }
 
         private void AddRegUser(int inUserID, EventInfo objEvent)

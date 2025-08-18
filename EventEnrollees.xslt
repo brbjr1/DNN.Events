@@ -7,25 +7,23 @@
   </xsl:template>
 
   <xsl:template match="Document">
+    <!-- Data rows only; header row is produced by XML layer -->
     <xsl:for-each select="Enrollee">
       <xsl:text>"</xsl:text><xsl:value-of select="EventName" /><xsl:text>";</xsl:text>
       <xsl:text>"</xsl:text><xsl:value-of select="EventStart" /><xsl:text>";</xsl:text>
       <xsl:text>"</xsl:text><xsl:value-of select="EventEnd" /><xsl:text>";</xsl:text>
-      <xsl:text>"</xsl:text><xsl:value-of select="Location" /><xsl:text>";</xsl:text>
-      <xsl:text>"</xsl:text><xsl:value-of select="Category" /><xsl:text>";</xsl:text>
-      <xsl:text>"</xsl:text><xsl:value-of select="ReferenceNumber" /><xsl:text>";</xsl:text>
-      <xsl:text>"</xsl:text><xsl:value-of select="Company" /><xsl:text>";</xsl:text>
-      <xsl:text>"</xsl:text><xsl:value-of select="JobTitle" /><xsl:text>";</xsl:text>
       <xsl:text>"</xsl:text><xsl:value-of select="FullName" /><xsl:text>";</xsl:text>
       <xsl:text>"</xsl:text><xsl:value-of select="FirstName" /><xsl:text>";</xsl:text>
       <xsl:text>"</xsl:text><xsl:value-of select="LastName" /><xsl:text>";</xsl:text>
       <xsl:text>"</xsl:text><xsl:value-of select="Email" /><xsl:text>";</xsl:text>
       <xsl:text>"</xsl:text><xsl:value-of select="Phone" /><xsl:text>";</xsl:text>
-      <xsl:text>"</xsl:text><xsl:value-of select="Street" /><xsl:text>";</xsl:text>
-      <xsl:text>"</xsl:text><xsl:value-of select="PostalCode" /><xsl:text>";</xsl:text>
-      <xsl:text>"</xsl:text><xsl:value-of select="City" /><xsl:text>";</xsl:text>
-      <xsl:text>"</xsl:text><xsl:value-of select="Region" /><xsl:text>";</xsl:text>
-      <xsl:text>"</xsl:text><xsl:value-of select="Country" /><xsl:text>";</xsl:text>
+      <xsl:text>"</xsl:text><xsl:value-of select="EmContactName" /><xsl:text>";</xsl:text>
+      <xsl:text>"</xsl:text><xsl:value-of select="EmContactPhone" /><xsl:text>";</xsl:text>
+      <xsl:text>"</xsl:text><xsl:value-of select="EmContactDetails" /><xsl:text>";</xsl:text>
+      <xsl:text>"</xsl:text><xsl:value-of select="WaiverCurrent" /><xsl:text>";</xsl:text>
+      <xsl:text>"</xsl:text><xsl:value-of select="WaiverExpireDate" /><xsl:text>";</xsl:text>
+      <xsl:text>"</xsl:text><xsl:value-of select="MembershipCurrent" /><xsl:text>";</xsl:text>
+      <xsl:text>"</xsl:text><xsl:value-of select="MembershipExpireDate" /><xsl:text>";</xsl:text>
       <xsl:text>&#10;</xsl:text>
     </xsl:for-each>
   </xsl:template>

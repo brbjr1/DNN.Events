@@ -35,6 +35,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Web;
+using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -558,17 +559,14 @@ namespace DotNetNuke.Modules.Events
                         }
                     }
                 }
-                grdEnrollment.Columns[0].HeaderText =
-                    Localization.GetString("EnrollUserName", LocalResourceFile);
-                grdEnrollment.Columns[1].HeaderText =
-                    Localization.GetString("EnrollDisplayName", LocalResourceFile);
-                grdEnrollment.Columns[2].HeaderText =
-                    Localization.GetString("EnrollEmail", LocalResourceFile);
-                grdEnrollment.Columns[3].HeaderText =
-                    Localization.GetString("EnrollPhone", LocalResourceFile);
-                grdEnrollment.Columns[4].HeaderText =
-                    Localization.GetString("EnrollApproved", LocalResourceFile);
-                grdEnrollment.Columns[5].HeaderText = Localization.GetString("EnrollNo", LocalResourceFile);
+                // Set localized headers dynamically by DataField to avoid index coupling
+                SetHeaderByDataField("EnrollUserName", "EnrollUserName");
+                SetHeaderByDataField("EnrollDisplayName", "EnrollDisplayName");
+                // Full name header left as markup or could be localized via resource key "EnrollFullName"
+                SetHeaderByDataField("EnrollEmail", "EnrollEmail");
+                SetHeaderByDataField("EnrollPhone", "EnrollPhone");
+                // SetHeaderByHeaderKey("EnrollApproved", "EnrollApproved"); // Approved column removed
+                SetHeaderByDataField("EnrollNo", "EnrollNo");
 
                 BindEnrollList(_eventInfo);
             }
@@ -621,6 +619,62 @@ namespace DotNetNuke.Modules.Events
 
         #region Helper Methods
 
+        private int FindBoundColumnIndex(string dataField)
+        {
+            for (var i = 0; i < grdEnrollment.Columns.Count; i++)
+            {
+                var bound = grdEnrollment.Columns[i] as BoundColumn;
+                if (bound != null && string.Equals(bound.DataField, dataField, StringComparison.Ordinal))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        private void SetHeaderByDataField(string dataField, string resourceKey)
+        {
+            var idx = FindBoundColumnIndex(dataField);
+            if (idx >= 0)
+            {
+                grdEnrollment.Columns[idx].HeaderText = Localization.GetString(resourceKey, LocalResourceFile);
+            }
+        }
+
+        private void SetHeaderByHeaderKey(string headerKey, string resourceKey)
+        {
+            for (var i = 0; i < grdEnrollment.Columns.Count; i++)
+            {
+                if (string.Equals(grdEnrollment.Columns[i].HeaderText, headerKey, StringComparison.Ordinal))
+                {
+                    grdEnrollment.Columns[i].HeaderText = Localization.GetString(resourceKey, LocalResourceFile);
+                }
+            }
+        }
+
+        private void HideColumnIfNotRequested(string txtColumns, string token, string dataField)
+        {
+            var idx = FindBoundColumnIndex(dataField);
+            if (idx >= 0 && txtColumns.LastIndexOf(token, StringComparison.Ordinal) < 0)
+            {
+                grdEnrollment.Columns[idx].Visible = false;
+            }
+        }
+
+        private void HideColumnIfNotRequestedByHeader(string txtColumns, string token, string headerKey)
+        {
+            for (var i = 0; i < grdEnrollment.Columns.Count; i++)
+            {
+                if (string.Equals(grdEnrollment.Columns[i].HeaderText, headerKey, StringComparison.Ordinal))
+                {
+                    if (txtColumns.LastIndexOf(token, StringComparison.Ordinal) < 0)
+                    {
+                        grdEnrollment.Columns[i].Visible = false;
+                    }
+                }
+            }
+        }
+
         /// <summary>
         ///     Bind enrolled users to the enrollment grid
         /// </summary>
@@ -640,57 +694,43 @@ namespace DotNetNuke.Modules.Events
 
             if (blEnrollList)
             {
-                if (txtColumns.LastIndexOf("UserName", StringComparison.Ordinal) < 0)
+                HideColumnIfNotRequested(txtColumns, "UserName", "EnrollUserName");
+                HideColumnIfNotRequested(txtColumns, "DisplayName", "EnrollDisplayName");
+                HideColumnIfNotRequested(txtColumns, "Email", "EnrollEmail");
+                HideColumnIfNotRequested(txtColumns, "Phone", "EnrollPhone");
+                // HideColumnIfNotRequestedByHeader(txtColumns, "Approved", "EnrollApproved"); // Approved column removed
+                HideColumnIfNotRequested(txtColumns, "Qty", "EnrollNo");
+                HideColumnIfNotRequested(txtColumns, "EmergencyContactName", "EnrollEmergencyContactName");
+                HideColumnIfNotRequested(txtColumns, "EmergencyContactNumber", "EnrollEmergencyContactNumber");
+                HideColumnIfNotRequested(txtColumns, "EmergencyContactDetails", "EnrollEmergencyContactDetails");
+                HideColumnIfNotRequested(txtColumns, "WaverCurrent", "EnrollWaverCurrent");
+                HideColumnIfNotRequested(txtColumns, "WaverExpireDate", "EnrollWaverExpireDate");
+                HideColumnIfNotRequested(txtColumns, "MemberShipCurrent", "EnrollMemberShipCurrent");
+                HideColumnIfNotRequested(txtColumns, "MemberExpireDate", "MemberExpireDate");
+
+                // Full Name column visibility: Admin, Module Editor, Moderator, or Event Owner
+                var showFullName = PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName)
+                                   || IsModuleEditor()
+                                   || IsModerator()
+                                   || eventInfo.OwnerID == UserId;
+                var fullNameColumnIndex = FindBoundColumnIndex("EnrollFullName");
+                if (fullNameColumnIndex >= 0)
                 {
-                    grdEnrollment.Columns[0].Visible = false;
+                    grdEnrollment.Columns[fullNameColumnIndex].Visible = showFullName;
                 }
-                if (txtColumns.LastIndexOf("DisplayName", StringComparison.Ordinal) < 0)
+
+                // For anonymous users (not editors), only show Display Name column
+                if (!Request.IsAuthenticated && !showFullName)
                 {
-                    grdEnrollment.Columns[1].Visible = false;
-                }
-                if (txtColumns.LastIndexOf("Email", StringComparison.Ordinal) < 0)
-                {
-                    grdEnrollment.Columns[2].Visible = false;
-                }
-                if (txtColumns.LastIndexOf("Phone", StringComparison.Ordinal) < 0)
-                {
-                    grdEnrollment.Columns[3].Visible = false;
-                }
-                if (txtColumns.LastIndexOf("Approved", StringComparison.Ordinal) < 0)
-                {
-                    grdEnrollment.Columns[4].Visible = false;
-                }
-                if (txtColumns.LastIndexOf("Qty", StringComparison.Ordinal) < 0)
-                {
-                    grdEnrollment.Columns[5].Visible = false;
-                }
-                if (txtColumns.LastIndexOf("EmergencyContactName", StringComparison.Ordinal) < 0)
-                {
-                    grdEnrollment.Columns[6].Visible = false;
-                }
-                if (txtColumns.LastIndexOf("EmergencyContactNumber", StringComparison.Ordinal) < 0)
-                {
-                    grdEnrollment.Columns[7].Visible = false;
-                }
-                if (txtColumns.LastIndexOf("EmergencyContactDetails", StringComparison.Ordinal) < 0)
-                {
-                    grdEnrollment.Columns[8].Visible = false;
-                }
-                if (txtColumns.LastIndexOf("WaverCurrent", StringComparison.Ordinal) < 0)
-                {
-                    grdEnrollment.Columns[9].Visible = false;
-                }
-                if (txtColumns.LastIndexOf("WaverExpireDate", StringComparison.Ordinal) < 0)
-                {
-                    grdEnrollment.Columns[10].Visible = false;
-                }
-                if (txtColumns.LastIndexOf("MemberShipCurrent", StringComparison.Ordinal) < 0)
-                {
-                    grdEnrollment.Columns[11].Visible = false;
-                }
-                if (txtColumns.LastIndexOf("MemberExpireDate", StringComparison.Ordinal) < 0)
-                {
-                    grdEnrollment.Columns[12].Visible = false;
+                    for (var i = 0; i < grdEnrollment.Columns.Count; i++)
+                    {
+                        grdEnrollment.Columns[i].Visible = false;
+                    }
+                    var displayIdx = FindBoundColumnIndex("EnrollDisplayName");
+                    if (displayIdx >= 0)
+                    {
+                        grdEnrollment.Columns[displayIdx].Visible = true;
+                    }
                 }
 
 
@@ -722,6 +762,7 @@ namespace DotNetNuke.Modules.Events
                         if (!ReferenceEquals(objUser, null))
                         {
                             objEnrollListItem.EnrollUserName = objUser.Username;
+                            objEnrollListItem.EnrollFullName = string.Format("{0} {1}", objUser.FirstName, objUser.LastName).Trim();
                             objEnrollListItem.EnrollEmail =
                                 string.Format("<a href=\"mailto:{0}?subject={1}\">{0}</a>", objSignup.Email,
                                               eventInfo.EventName);
@@ -761,6 +802,7 @@ namespace DotNetNuke.Modules.Events
                     else
                     {
                         objEnrollListItem.EnrollDisplayName = objSignup.AnonName;
+                        objEnrollListItem.EnrollFullName = objSignup.AnonName;
                         objEnrollListItem.EnrollUserName = Localization.GetString("AnonUser", LocalResourceFile);
                         objEnrollListItem.EnrollEmail =
                             string.Format("<a href=\"mailto:{0}?subject={1}\">{0}</a>", objSignup.AnonEmail,
@@ -768,7 +810,7 @@ namespace DotNetNuke.Modules.Events
                         objEnrollListItem.EnrollPhone = objSignup.AnonTelephone;
                     }
                     objEnrollListItem.SignupID = objSignup.SignupID;
-                    objEnrollListItem.EnrollApproved = objSignup.Approved;
+                    // objEnrollListItem.EnrollApproved = objSignup.Approved; // Approved column removed
                     objEnrollListItem.EnrollNo = objSignup.NoEnrolees;
                     eventEnrollment.Add(objEnrollListItem);
                 }
@@ -1001,42 +1043,37 @@ namespace DotNetNuke.Modules.Events
                                             new XElement(
                                                 "Phone",
                                                 Localization.GetString("Phone.Header", LocalResourceFile)),
-                                            new XElement(
-                                                "Street",
-                                                Localization.GetString("Street.Header", LocalResourceFile)),
-                                            new XElement("PostalCode",
-                                                         Localization.GetString(
-                                                             "PostalCode.Header", LocalResourceFile)),
-                                            new XElement(
-                                                "City", Localization.GetString("City.Header", LocalResourceFile)),
-                                            new XElement(
-                                                "Region",
-                                                Localization.GetString("Region.Header", LocalResourceFile)),
-                                            new XElement(
-                                                "Country",
-                                                Localization.GetString("Country.Header", LocalResourceFile)));
+                                            new XElement("EmContactName", Localization.GetString("EmContactName.Header", LocalResourceFile)),
+                                            new XElement("EmContactPhone", Localization.GetString("EmContactPhone.Header", LocalResourceFile)),
+                                            new XElement("EmContactDetails", Localization.GetString("EmContactDetails.Header", LocalResourceFile)),
+                                            new XElement("WaiverCurrent", Localization.GetString("WaiverCurrent.Header", LocalResourceFile)),
+                                            new XElement("WaiverExpireDate", Localization.GetString("WaiverExpireDate.Header", LocalResourceFile)),
+                                            new XElement("MembershipCurrent", Localization.GetString("MembershipCurrent.Header", LocalResourceFile)),
+                                            new XElement("MembershipExpireDate", Localization.GetString("MembershipExpireDate.Header", LocalResourceFile)));
                 }
                 else
                 {
                     xElemHdr = new XElement("Enrollee",
-                                            new XElement("EventName", string.Empty),
-                                            new XElement("EventStart", string.Empty),
-                                            new XElement("EventEnd", string.Empty),
-                                            new XElement("Location", string.Empty),
-                                            new XElement("Category", string.Empty),
-                                            new XElement("ReferenceNumber", string.Empty),
-                                            new XElement("Company", string.Empty),
-                                            new XElement("JobTitle", string.Empty),
-                                            new XElement("FullName", string.Empty),
-                                            new XElement("FirstName", string.Empty),
-                                            new XElement("LastName", string.Empty),
-                                            new XElement("Email", string.Empty),
-                                            new XElement("Phone", string.Empty),
-                                            new XElement("Street", string.Empty),
-                                            new XElement("PostalCode", string.Empty),
-                                            new XElement("City", string.Empty),
-                                            new XElement("Region", string.Empty),
-                                            new XElement("Country", string.Empty));
+                                             new XElement("EventName", string.Empty),
+                                             new XElement("EventStart", string.Empty),
+                                             new XElement("EventEnd", string.Empty),
+                                             new XElement("Location", string.Empty),
+                                             new XElement("Category", string.Empty),
+                                             new XElement("ReferenceNumber", string.Empty),
+                                             new XElement("Company", string.Empty),
+                                             new XElement("JobTitle", string.Empty),
+                                             new XElement("FullName", string.Empty),
+                                             new XElement("FirstName", string.Empty),
+                                             new XElement("LastName", string.Empty),
+                                             new XElement("Email", string.Empty),
+                                             new XElement("Phone", string.Empty),
+                                             new XElement("EmContactName", string.Empty),
+                                             new XElement("EmContactPhone", string.Empty),
+                                             new XElement("EmContactDetails", string.Empty),
+                                             new XElement("WaiverCurrent", string.Empty),
+                                             new XElement("WaiverExpireDate", string.Empty),
+                                             new XElement("MembershipCurrent", string.Empty),
+                                             new XElement("MembershipExpireDate", string.Empty));
                 }
 
                 //Names cannot be empty nor contain spaces.
@@ -1097,32 +1134,47 @@ namespace DotNetNuke.Modules.Events
                                               new XElement(xNamespace + xElemHdr.Elements("Phone").First().Value,
                                                            Localization.GetString(
                                                                "Phone.Header", LocalResourceFile)),
-                                              new XElement(xNamespace + xElemHdr.Elements("Street").First().Value,
-                                                           Localization.GetString(
-                                                               "Street.Header", LocalResourceFile)),
-                                              new XElement(xNamespace + xElemHdr.Elements("PostalCode").First().Value,
-                                                           Localization.GetString(
-                                                               "PostalCode.Header", LocalResourceFile)),
-                                              new XElement(xNamespace + xElemHdr.Elements("City").First().Value,
-                                                           Localization.GetString(
-                                                               "City.Header", LocalResourceFile)),
-                                              new XElement(xNamespace + xElemHdr.Elements("Region").First().Value,
-                                                           Localization.GetString(
-                                                               "Region.Header", LocalResourceFile)),
-                                              new XElement(xNamespace + xElemHdr.Elements("Country").First().Value,
-                                                           Localization.GetString(
-                                                               "Country.Header", LocalResourceFile))
+                                              new XElement(xNamespace + xElemHdr.Elements("EmContactName").First().Value,
+                                                          Localization.GetString("EmContactName.Header", LocalResourceFile)),
+                                              new XElement(xNamespace + xElemHdr.Elements("EmContactPhone").First().Value,
+                                                          Localization.GetString("EmContactPhone.Header", LocalResourceFile)),
+                                              new XElement(xNamespace + xElemHdr.Elements("EmContactDetails").First().Value,
+                                                          Localization.GetString("EmContactDetails.Header", LocalResourceFile)),
+                                              new XElement(xNamespace + xElemHdr.Elements("WaiverCurrent").First().Value,
+                                                          Localization.GetString("WaiverCurrent.Header", LocalResourceFile)),
+                                              new XElement(xNamespace + xElemHdr.Elements("WaiverExpireDate").First().Value,
+                                                          Localization.GetString("WaiverExpireDate.Header", LocalResourceFile)),
+                                              new XElement(xNamespace + xElemHdr.Elements("MembershipCurrent").First().Value,
+                                                          Localization.GetString("MembershipCurrent.Header", LocalResourceFile)),
+                                              new XElement(xNamespace + xElemHdr.Elements("MembershipExpireDate").First().Value,
+                                                          Localization.GetString("MembershipExpireDate.Header", LocalResourceFile))
                     );
                     xElemList.Add(xElemEvent);
                 }
 
                 var objCtlUser = new UserController();
+                var rolesController = new DotNetNuke.Security.Roles.RoleController();
                 foreach (EventSignupsInfo eventSignup in eventSignups)
                 {
                     if (eventSignup.UserID != -1)
                     {
                         //Known DNN/Evoq user. Get info from user profile.
                         var objUser = objCtlUser.GetUser(PortalId, eventSignup.UserID);
+                        
+                        // Compute membership values for CSV export
+                        string membershipCurrent = "No";
+                        string membershipExpireDate = string.Empty;
+                        var paidRole = rolesController.GetRoleByName(0, "Paid Member");
+                        if (paidRole != null)
+                        {
+                            var userRole = rolesController.GetUserRole(PortalId, eventSignup.UserID, paidRole.RoleID);
+                            if (userRole != null && userRole.ExpiryDate != null)
+                            {
+                                membershipCurrent = userRole.ExpiryDate >= theEvent.EventTimeBegin ? "Yes" : "No";
+                                membershipExpireDate = ((DateTime)userRole.ExpiryDate).ToString("MM/dd/yyyy");
+                            }
+                        }
+                        
                         xElemEvent = new XElement(xNamespace + "Enrollee",
                                                   new XElement(
                                                       xNamespace + xElemHdr.Elements("EventName").First().Value,
@@ -1154,17 +1206,25 @@ namespace DotNetNuke.Modules.Events
                                                                objUser.Email),
                                                   new XElement(xNamespace + xElemHdr.Elements("Phone").First().Value,
                                                                GetPropertyForDownload(objUser, "Telephone")),
-                                                  new XElement(xNamespace + xElemHdr.Elements("Street").First().Value,
-                                                               GetPropertyForDownload(objUser, "Street")),
-                                                  new XElement(
-                                                      xNamespace + xElemHdr.Elements("PostalCode").First().Value,
-                                                      GetPropertyForDownload(objUser, "PostalCode")),
-                                                  new XElement(xNamespace + xElemHdr.Elements("City").First().Value,
-                                                               GetPropertyForDownload(objUser, "City")),
-                                                  new XElement(xNamespace + xElemHdr.Elements("Region").First().Value,
-                                                               GetPropertyForDownload(objUser, "Region")),
-                                                  new XElement(xNamespace + xElemHdr.Elements("Country").First().Value,
-                                                               GetPropertyForDownload(objUser, "Country")));
+                                                  new XElement(xNamespace + xElemHdr.Elements("EmContactName").First().Value,
+                                                               objUser.Profile.GetPropertyValue("emergency_contact_name")),
+                                                  new XElement(xNamespace + xElemHdr.Elements("EmContactPhone").First().Value,
+                                                               objUser.Profile.GetPropertyValue("emergency_contact_number")),
+                                                  new XElement(xNamespace + xElemHdr.Elements("EmContactDetails").First().Value,
+                                                               objUser.Profile.GetPropertyValue("Emergency_Contact_Details")),
+                                                  new XElement(xNamespace + xElemHdr.Elements("WaiverCurrent").First().Value,
+                                                               (string.IsNullOrWhiteSpace(objUser.Profile.GetPropertyValue("Completed_Waiver:"))
+                                                                    ? "No"
+                                                                    : (DateTime.Parse(objUser.Profile.GetPropertyValue("Completed_Waiver:"))
+                                                                           .AddYears(1) >= theEvent.EventTimeBegin ? "Yes" : "No"))),
+                                                  new XElement(xNamespace + xElemHdr.Elements("WaiverExpireDate").First().Value,
+                                                               (string.IsNullOrWhiteSpace(objUser.Profile.GetPropertyValue("Completed_Waiver:"))
+                                                                    ? string.Empty
+                                                                    : DateTime.Parse(objUser.Profile.GetPropertyValue("Completed_Waiver:"))
+                                                                          .AddYears(1).ToString("MM/dd/yyyy"))),
+                                                  new XElement(xNamespace + xElemHdr.Elements("MembershipCurrent").First().Value, membershipCurrent),
+                                                  new XElement(xNamespace + xElemHdr.Elements("MembershipExpireDate").First().Value, membershipExpireDate)
+                                                  );
                     }
                     else
                     {
@@ -1200,17 +1260,14 @@ namespace DotNetNuke.Modules.Events
                                                                eventSignup.AnonEmail),
                                                   new XElement(xNamespace + xElemHdr.Elements("Phone").First().Value,
                                                                eventSignup.AnonTelephone),
-                                                  new XElement(xNamespace + xElemHdr.Elements("Street").First().Value,
-                                                               eventSignup.Street),
-                                                  new XElement(
-                                                      xNamespace + xElemHdr.Elements("PostalCode").First().Value,
-                                                      eventSignup.PostalCode),
-                                                  new XElement(xNamespace + xElemHdr.Elements("City").First().Value,
-                                                               eventSignup.City),
-                                                  new XElement(xNamespace + xElemHdr.Elements("Region").First().Value,
-                                                               eventSignup.Region),
-                                                  new XElement(xNamespace + xElemHdr.Elements("Country").First().Value,
-                                                               eventSignup.Country));
+                                                  new XElement(xNamespace + xElemHdr.Elements("EmContactName").First().Value, string.Empty),
+                                                  new XElement(xNamespace + xElemHdr.Elements("EmContactPhone").First().Value, string.Empty),
+                                                  new XElement(xNamespace + xElemHdr.Elements("EmContactDetails").First().Value, string.Empty),
+                                                  new XElement(xNamespace + xElemHdr.Elements("WaiverCurrent").First().Value, string.Empty),
+                                                  new XElement(xNamespace + xElemHdr.Elements("WaiverExpireDate").First().Value, string.Empty),
+                                                  new XElement(xNamespace + xElemHdr.Elements("MembershipCurrent").First().Value, string.Empty),
+                                                  new XElement(xNamespace + xElemHdr.Elements("MembershipExpireDate").First().Value, string.Empty)
+                                                  );
                     }
                     xElemList.Add(xElemEvent);
                 }

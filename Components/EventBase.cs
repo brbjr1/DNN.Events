@@ -849,6 +849,7 @@ namespace Components
                         txtColumns = Settings.EnrollEditFields 
                             + ";" + Settings.EnrollViewFields 
                             + ";" + Settings.EnrollAnonFields
+                            + ";FullName"
                             + ";EmergencyContactName"
                             + ";EmergencyContactNumber"
                             + ";EmergencyContactDetails"
@@ -880,6 +881,7 @@ namespace Components
             txtColumns = txtColumns.Replace("04", "Phone");
             txtColumns = txtColumns.Replace("05", "Approved");
             txtColumns = txtColumns.Replace("06", "Qty");
+            txtColumns = txtColumns.Replace("07", "FullName");
 
             return txtColumns;
         }

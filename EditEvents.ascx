@@ -505,33 +505,19 @@
                         <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
                         <ItemStyle CssClass="EditEnrollDisplay"></ItemStyle>
                     </asp:BoundColumn>
+                    <asp:BoundColumn DataField="EnrollFullName" HeaderText="Full Name">
+                        <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
+                        <ItemStyle CssClass="EditEnrollDisplay"></ItemStyle>
+                    </asp:BoundColumn>
                     <asp:BoundColumn DataField="EnrollEmail" HeaderText="Email">
                         <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
                         <ItemStyle CssClass="EditEnrollEmail"></ItemStyle>
                     </asp:BoundColumn>
-                    <asp:BoundColumn DataField="Enrollphone" HeaderText="Phone">
+                    <asp:BoundColumn DataField="EnrollPhone" HeaderText="Phone">
                         <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
                         <ItemStyle CssClass="EditEnrollPhone"></ItemStyle>
                     </asp:BoundColumn>
-                    <asp:TemplateColumn headerText="EnrollApproved">
-                        <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
-                        <ItemStyle CssClass="EditEnrollApproved"></ItemStyle>
-                        <ItemTemplate>
-                            <asp:CheckBox ID="chkEnrollApproved" runat="server" Enabled="false" Checked='<%# DataBinder.Eval(Container.DataItem, "EnrollApproved") %>'/>
-                        </ItemTemplate>
-                    </asp:TemplateColumn>
-                    <asp:BoundColumn DataField="EnrollNo" HeaderText="Qty">
-                        <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
-                        <ItemStyle CssClass="EditEnrollNo"></ItemStyle>
-                    </asp:BoundColumn>
-                    <asp:TemplateColumn HeaderText="Event Date">
-                        <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
-                        <ItemStyle CssClass="EditEnrollDate"></ItemStyle>
-                        <ItemTemplate>
-                            <asp:Label id="lblEventBegin" runat="server" Text='<%# string.Format(DataBinder.Eval(Container.DataItem, "EnrollTimeBegin", "{0:d}")) %>'>
-                            </asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateColumn>
+
 
                      <asp:BoundColumn DataField="EnrollEmergencyContactName" HeaderText="Emergency Contact Name">
                          <HeaderStyle CssClass="EditEnrollGridHeader"></HeaderStyle>
@@ -582,9 +568,11 @@
         </div>
     </div>
 </asp:Panel>
-<div id="tblEventEmail" runat="server">
+<div id="tblEventEmail" runat="server" class="dnnFormSection">
     <hr/>
-    <asp:Label id="lblEventEmail" runat="server" resourcekey="lblEventEmail" cssclass="Head"></asp:Label>
+    <h2 class="dnnFormSectionHead">
+        <asp:Label id="lblEventEmail" runat="server" resourcekey="lblEventEmail"></asp:Label>
+    </h2>
     <div class="dnnFormItem">
         <dnn:Label id="lblEventEmailFrom" runat="server"></dnn:Label>
         <asp:TextBox id="txtEventEmailFrom" runat="server" Font-Size="8pt" cssclass="NormalTextBox" width="157px" MaxLength="100" Wrap="False"></asp:TextBox>

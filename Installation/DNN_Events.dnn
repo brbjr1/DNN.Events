@@ -260,6 +260,24 @@
                     <helpUrl>https://github.com/DNNCommunity/DNN.Events/wiki</helpUrl>
                   </moduleControl>
                   <moduleControl>
+                    <controlKey>Details</controlKey>
+                    <controlSrc>DesktopModules/Events/EventDetails.ascx</controlSrc>
+                    <supportsPartialRendering>true</supportsPartialRendering>
+                    <supportsPopUps>false</supportsPopUps>
+                    <controlTitle>Events Details</controlTitle>
+                    <controlType>View</controlType>
+                    <helpUrl>https://github.com/DNNCommunity/DNN.Events/wiki</helpUrl>
+                  </moduleControl>
+                  <moduleControl>
+                    <controlKey>Edit</controlKey>
+                    <controlSrc>DesktopModules/Events/EditEvents.ascx</controlSrc>
+                    <supportsPartialRendering>false</supportsPartialRendering>
+                    <supportsPopUps>true</supportsPopUps>
+                    <controlTitle>Edit Events</controlTitle>
+                    <controlType>View</controlType>
+                    <helpUrl>https://github.com/DNNCommunity/DNN.Events/wiki</helpUrl>
+                  </moduleControl>
+                  <moduleControl>
                     <controlKey>Day</controlKey>
                     <controlSrc>DesktopModules/Events/EventDay.ascx</controlSrc>
                     <supportsPartialRendering>true</supportsPartialRendering>
