@@ -65,8 +65,8 @@ namespace DotNetNuke.Modules.Events
             {
                 var objSecurity = new PortalSecurity();
                 var status = objSecurity.InputFilter(Request.Params["status"],
-                                                     (PortalSecurity.FilterFlag) ((int) PortalSecurity.FilterFlag.NoScripting |
-                                                                                  (int) PortalSecurity.FilterFlag.NoMarkup));
+                                                     (PortalSecurity.FilterFlag)((int)PortalSecurity.FilterFlag.NoScripting |
+                                                                                  (int)PortalSecurity.FilterFlag.NoMarkup));
                 Exceptions.LogException(new ModuleLoadException("EventDetails Call...status: " + status));
             }
 
@@ -434,7 +434,7 @@ namespace DotNetNuke.Modules.Events
                             "onclick",
                             "javascript:return confirm('" +
                             Localization.GetString("SureYouWantToEnroll", LocalResourceFile) + "');");
-                        
+
                         //bbehrens custom
                         cmdUNSignup.Attributes.Add(
                             "onclick",
@@ -549,12 +549,12 @@ namespace DotNetNuke.Modules.Events
                         }
                         valReminderTime2.ErrorMessage = valReminderTime.ErrorMessage;
 
-                        rem1.Visible = true;
+                        //rem1.Visible = true;
                         imgNotify.AlternateText = Localization.GetString("Reminder", LocalResourceFile);
-                        rem2.Visible = true;
+                        //rem2.Visible = true;
                         if (_eventInfo.RRULE != "")
                         {
-                            chkReminderRec.Visible = true;
+                            //chkReminderRec.Visible = true;
                         }
                     }
                 }
@@ -664,6 +664,37 @@ namespace DotNetNuke.Modules.Events
                 {
                     grdEnrollment.Columns[5].Visible = false;
                 }
+                if (txtColumns.LastIndexOf("EmergencyContactName", StringComparison.Ordinal) < 0)
+                {
+                    grdEnrollment.Columns[6].Visible = false;
+                }
+                if (txtColumns.LastIndexOf("EmergencyContactNumber", StringComparison.Ordinal) < 0)
+                {
+                    grdEnrollment.Columns[7].Visible = false;
+                }
+                if (txtColumns.LastIndexOf("EmergencyContactDetails", StringComparison.Ordinal) < 0)
+                {
+                    grdEnrollment.Columns[8].Visible = false;
+                }
+                if (txtColumns.LastIndexOf("WaverCurrent", StringComparison.Ordinal) < 0)
+                {
+                    grdEnrollment.Columns[9].Visible = false;
+                }
+                if (txtColumns.LastIndexOf("WaverExpireDate", StringComparison.Ordinal) < 0)
+                {
+                    grdEnrollment.Columns[10].Visible = false;
+                }
+                if (txtColumns.LastIndexOf("MemberShipCurrent", StringComparison.Ordinal) < 0)
+                {
+                    grdEnrollment.Columns[11].Visible = false;
+                }
+                if (txtColumns.LastIndexOf("MemberExpireDate", StringComparison.Ordinal) < 0)
+                {
+                    grdEnrollment.Columns[12].Visible = false;
+                }
+
+
+
 
                 //Load enrol list
                 var eventEnrollment = new ArrayList();
@@ -672,6 +703,9 @@ namespace DotNetNuke.Modules.Events
                 var objCtlUser = new UserController();
                 var objCtlEventSignups = new EventSignupsController();
                 objSignups = objCtlEventSignups.EventsSignupsGetEvent(eventInfo.EventID, ModuleId);
+
+                DotNetNuke.Security.Roles.RoleController rolesController = new DotNetNuke.Security.Roles.RoleController();
+
                 foreach (EventSignupsInfo tempLoopVar_objSignup in objSignups)
                 {
                     objSignup = tempLoopVar_objSignup;
@@ -692,6 +726,36 @@ namespace DotNetNuke.Modules.Events
                                 string.Format("<a href=\"mailto:{0}?subject={1}\">{0}</a>", objSignup.Email,
                                               eventInfo.EventName);
                             objEnrollListItem.EnrollPhone = objUser.Profile.Telephone;
+
+                            //bbehrens custom
+                            objEnrollListItem.EnrollEmergencyContactName = objUser.Profile.GetPropertyValue("emergency_contact_name");
+                            objEnrollListItem.EnrollEmergencyContactNumber = objUser.Profile.GetPropertyValue("emergency_contact_number");
+                            objEnrollListItem.EnrollEmergencyContactDetails = objUser.Profile.GetPropertyValue("Emergency_Contact_Details");
+
+                            var waverdate = objUser.Profile.GetPropertyValue("Completed_Waiver:");
+                            DateTime? dtwaverDate = null;
+                            if (!string.IsNullOrWhiteSpace(waverdate))
+                            {
+                                dtwaverDate = DateTime.Parse(waverdate).AddYears(1);
+                            }
+                            objEnrollListItem.EnrollWaverCurrent = dtwaverDate != null && dtwaverDate >= eventInfo.EventTimeBegin ? "Yes": "No";
+                            objEnrollListItem.EnrollWaverExpireDate = dtwaverDate != null ? ((DateTime)dtwaverDate).ToString("MM/dd/yyyy") : "";
+
+
+                            UserRoleInfo role = rolesController.GetUserRole(PortalId, objSignup.UserID, rolesController.GetRoleByName(0, "Paid Member").RoleID);
+
+                            DateTime? packMembershipexpiryDate = null;
+                            if (!ReferenceEquals(role, null))
+                            {
+                                packMembershipexpiryDate = role.ExpiryDate;
+                            }
+
+                            objEnrollListItem.EnrollMemberShipCurrent = packMembershipexpiryDate != null && packMembershipexpiryDate >= eventInfo.EventTimeBegin ? "Yes" : "No";
+                            objEnrollListItem.MemberExpireDate = packMembershipexpiryDate != null ? ((DateTime)packMembershipexpiryDate).ToString("MM/dd/yyyy") : "";
+
+
+
+
                         }
                     }
                     else
@@ -1615,7 +1679,7 @@ namespace DotNetNuke.Modules.Events
                     // Send Moderator email
                     var objEventEmailInfo = new EventEmailInfo();
                     var objEventEmail = new EventEmails(PortalId, ModuleId, LocalResourceFile,
-                                                        ((PageBase) Page).PageCulture.Name);
+                                                        ((PageBase)Page).PageCulture.Name);
                     if (Settings.Moderateall && objEventSignups.Approved == false)
                     {
                         objEventEmailInfo.TxtEmailSubject = Settings.Templates.moderateemailsubject;
@@ -1928,7 +1992,7 @@ namespace DotNetNuke.Modules.Events
 
             var objEventEmailInfo = new EventEmailInfo();
             var objEventEmail = new EventEmails(PortalId, ModuleId, LocalResourceFile,
-                                                ((PageBase) Page).PageCulture.Name);
+                                                ((PageBase)Page).PageCulture.Name);
             objEventEmailInfo.TxtEmailSubject = Settings.Templates.EventiCalSubject;
             objEventEmailInfo.TxtEmailBody = Settings.Templates.EventiCalBody;
             objEventEmailInfo.TxtEmailFrom = Settings.StandardEmail;
