@@ -341,6 +341,9 @@
     </Compile>
     <Content Include="EventEnrollees.xslt" />
     <Content Include="EventSettings.ascx" />
+    <Content Include="savetocsv.ascx" />
+    <Content Include="EventRssSocial.aspx" />
+    <Content Include="EventRssSocial.aspx.vb" />
     <Content Include="EditEvents.ascx">
       <SubType>Form</SubType>
     </Content>

@@ -492,5 +492,3 @@ Select s.EventID, s.SignupID, s.ModuleID, s.Userid, s.Approved,
    Left Join {databaseOwner}{objectQualifier}Events c ON s.EventID = c.EventID
 Where  s.SignupID = @@Identity
 ORDER BY s.EventTimeBegin, c.EventName, UserName
-GO
-
