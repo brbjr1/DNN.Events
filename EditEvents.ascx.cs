@@ -26,9 +26,11 @@
 using System;
 using System.Collections;
 using System.Diagnostics;
+using System.IO;
 using System.Globalization;
 using System.Reflection;
 using System.Threading;
+using System.Web;
 using System.Web.UI.WebControls;
 using Components;
 using DNNtc;
@@ -66,6 +68,12 @@ namespace DotNetNuke.Modules.Events
         private readonly CultureInfo _culture = Thread.CurrentThread.CurrentCulture;
         private const string RecurTableDisplayType = "inline-block";
 
+        // Flag to control file logging - set to true to re-enable file logging
+        private static readonly bool _enableFileLogging = false;
+        
+        // Field to capture file logging exceptions for debugging
+        private string _fileLogExceptionMessage = "";
+
         #endregion
         protected override void OnInit(EventArgs e)
         {
@@ -76,14 +84,74 @@ namespace DotNetNuke.Modules.Events
         }
         #region Event Handlers
 
+        private void EnsureFileDebugListener()
+        {
+            try
+            {
+                // File logging is currently disabled to reduce log verbosity
+                // To re-enable, uncomment the code below and set _enableFileLogging = true
+                if (!_enableFileLogging) return;
+                // Ensure directory exists; avoid attaching a live TextWriterTraceListener to prevent file locks.
+                var appDataPath = HttpContext.Current != null
+                    ? HttpContext.Current.Server.MapPath("~/App_Data/EventsDebug.log")
+                    : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "EventsDebug.log");
+                Directory.CreateDirectory(Path.GetDirectoryName(appDataPath));
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"DEBUG: FileLog exception: {ex.Message}");
+                // place breakpoint here to inspect errors
+                var _fileLogExceptionMessage = ex.ToString();
+                // swallow to avoid impacting page flow
+            }
+        }
+
+        private void FileLog(string message)
+        {
+            // File logging is currently disabled to reduce log verbosity
+            // To re-enable, uncomment the code below and set _enableFileLogging = true
+            if (!_enableFileLogging) return;
+            
+            try
+            {
+                var appDataPath = HttpContext.Current != null
+                    ? HttpContext.Current.Server.MapPath("~/App_Data/EventsDebug.log")
+                    : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App_Data", "EventsDebug.log");
+
+                Directory.CreateDirectory(Path.GetDirectoryName(appDataPath));
+                var line = $"[Events] {DateTime.UtcNow:O} - {message}\r\n";
+                // Use FileStream with FileShare.ReadWrite to allow other processes to read the log
+                using (var fs = new FileStream(appDataPath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
+                using (var sw = new StreamWriter(fs))
+                {
+                    sw.Write(line);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Capture exception message for debugging if logging fails
+                _fileLogExceptionMessage = ex.Message;
+                System.Diagnostics.Debug.WriteLine($"DEBUG: FileLog failed: {ex.Message}");
+            }
+        }
+
         private void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                EnsureFileDebugListener();
+                FileLog("Page_Load entered");
                 // Determine ItemId of Event to Update
                 if (!ReferenceEquals(Request.Params["ItemId"], null))
                 {
                     _itemID = int.Parse(Request.Params["ItemId"]);
+                    System.Diagnostics.Debug.WriteLine($"DEBUG: Page_Load - Set _itemID from Request.Params['ItemId'] = {_itemID}");
+                    FileLog($"Page_Load - ItemId parsed = {_itemID}");
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine($"DEBUG: Page_Load - Request.Params['ItemId'] is null, _itemID remains {_itemID}");
+                    FileLog($"Page_Load - ItemId missing, _itemID = {_itemID}");
                 }
 
                 // Verify that the current user has edit access to this module
@@ -596,9 +664,11 @@ namespace DotNetNuke.Modules.Events
             txtEventEmailSubject.Text = Settings.Templates.txtEditViewEmailSubject;
             txtEventEmailBody.Text = Settings.Templates.txtEditViewEmailBody;
 
+            System.Diagnostics.Debug.WriteLine($"DEBUG: LoadEvent - _itemID = {_itemID}");
             if (_itemID != -1)
             {
                 // Edit Item Mode
+                System.Diagnostics.Debug.WriteLine($"DEBUG: LoadEvent - Loading existing event with ID {_itemID}");
                 var objEvent = default(EventInfo);
                 objEvent = _objCtlEvent.EventsGet(_itemID, ModuleId);
 
@@ -1436,6 +1506,44 @@ namespace DotNetNuke.Modules.Events
 
         private void UpdateProcessing(int processItem)
         {
+        EnsureFileDebugListener();
+        FileLog($"UpdateProcessing entered with processItem={processItem}");
+                    // Debug: Log the processItem parameter
+        System.Diagnostics.Debug.WriteLine($"DEBUG: UpdateProcessing - processItem = {processItem}");
+            
+            // Validate Reminder Time
+            if (chkReminder.Checked)
+            {
+                var remtime = Convert.ToInt32(txtReminderTime.Text);
+                switch (ddlReminderTimeMeasurement.SelectedValue)
+                {
+                    case "m":
+                        if ((remtime < 15) | (remtime > 60))
+                        {
+                            valReminderTime2.IsValid = false;
+                            valReminderTime2.Visible = true;
+                            return;
+                        }
+                        break;
+                    case "h":
+                        if ((remtime < 1) | (remtime > 24))
+                        {
+                            valReminderTime2.IsValid = false;
+                            valReminderTime2.Visible = true;
+                            return;
+                        }
+                        break;
+                    case "d":
+                        if ((remtime < 1) | (remtime > 30))
+                        {
+                            valReminderTime2.IsValid = false;
+                            valReminderTime2.Visible = true;
+                            return;
+                        }
+                        break;
+                }
+            }
+
             if (!Page.IsValid)
             {
                 return;
@@ -1644,9 +1752,11 @@ namespace DotNetNuke.Modules.Events
             var objEventRMSave = new EventRecurMasterInfo();
 
             // Get Current Event, if <> 0
-            if (processItem > 0)
-            {
-                objEvent = _objCtlEvent.EventsGet(processItem, ModuleId);
+                            if (processItem > 0)
+                {
+                    System.Diagnostics.Debug.WriteLine($"DEBUG: Retrieving event with ID {processItem}");
+                    objEvent = _objCtlEvent.EventsGet(processItem, ModuleId);
+                    System.Diagnostics.Debug.WriteLine($"DEBUG: Retrieved event - EventID: {objEvent?.EventID}, EventName: '{objEvent?.EventName}'");
                 objEventRecurMaster =
                     _objCtlEventRecurMaster.EventsRecurMasterGet(objEvent.RecurMasterID, objEvent.ModuleID);
                 objEventRMSave =
@@ -1679,21 +1789,57 @@ namespace DotNetNuke.Modules.Events
                 objEventRecurMaster.JournalItem = false;
             }
             // Filter text for non-admins and moderators
-            if (PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
+            // Safely get rich text content to avoid request validation issues
+            string desktopText = "";
+            string summaryText = "";
+            
+            try
             {
-                objEventRecurMaster.EventName = txtTitle.Text;
-                objEventRecurMaster.EventDesc = Convert.ToString(ftbDesktopText.Text);
+                desktopText = Convert.ToString(ftbDesktopText.Text);
+                summaryText = Convert.ToString(ftbSummary.Text);
+            }
+            catch (HttpRequestValidationException)
+            {
+                // If request validation fails, try to get content from form data
+                try
+                {
+                    string formKey = "dnn$ctr" + ModuleId + "$EditEvents$ftbDesktopText$ftbDesktopText";
+                    if (Request.Form[formKey] != null)
+                    {
+                        desktopText = Request.Form[formKey];
+                    }
+                    
+                    string summaryFormKey = "dnn$ctr" + ModuleId + "$EditEvents$ftbSummary$ftbSummary";
+                    if (Request.Form[summaryFormKey] != null)
+                    {
+                        summaryText = Request.Form[summaryFormKey];
+                    }
+                }
+                catch
+                {
+                    // If all else fails, use empty content
+                    desktopText = "";
+                    summaryText = "";
+                }
+            }
+            
+                            if (PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName))
+                {
+                    System.Diagnostics.Debug.WriteLine($"DEBUG: Setting EventName from txtTitle.Text = '{txtTitle.Text}'");
+                    objEventRecurMaster.EventName = txtTitle.Text;
+                    System.Diagnostics.Debug.WriteLine($"DEBUG: objEventRecurMaster.EventName is now = '{objEventRecurMaster.EventName}'");
+                objEventRecurMaster.EventDesc = desktopText;
                 objEventRecurMaster.CustomField1 = txtCustomField1.Text;
                 objEventRecurMaster.CustomField2 = txtCustomField2.Text;
                 objEventRecurMaster.Notify = txtSubject.Text;
                 objEventRecurMaster.Reminder = txtReminder.Text;
-                objEventRecurMaster.Summary = Convert.ToString(ftbSummary.Text);
+                objEventRecurMaster.Summary = summaryText;
             }
             else if (IsModerator())
             {
                 objEventRecurMaster.EventName =
                     objSecurity.InputFilter(txtTitle.Text, PortalSecurity.FilterFlag.NoScripting);
-                objEventRecurMaster.EventDesc = Convert.ToString(ftbDesktopText.Text);
+                objEventRecurMaster.EventDesc = desktopText;
                 objEventRecurMaster.CustomField1 =
                     objSecurity.InputFilter(txtCustomField1.Text, PortalSecurity.FilterFlag.NoScripting);
                 objEventRecurMaster.CustomField2 =
@@ -1702,15 +1848,14 @@ namespace DotNetNuke.Modules.Events
                     objSecurity.InputFilter(txtSubject.Text, PortalSecurity.FilterFlag.NoScripting);
                 objEventRecurMaster.Reminder =
                     objSecurity.InputFilter(txtReminder.Text, PortalSecurity.FilterFlag.NoScripting);
-                objEventRecurMaster.Summary = Convert.ToString(ftbSummary.Text);
+                objEventRecurMaster.Summary = summaryText;
             }
             else
             {
                 objEventRecurMaster.EventName =
                     objSecurity.InputFilter(txtTitle.Text, PortalSecurity.FilterFlag.NoScripting);
                 objEventRecurMaster.EventDesc =
-                    objSecurity.InputFilter(Convert.ToString(ftbDesktopText.Text),
-                                            PortalSecurity.FilterFlag.NoScripting);
+                    objSecurity.InputFilter(desktopText, PortalSecurity.FilterFlag.NoScripting);
                 objEventRecurMaster.CustomField1 =
                     objSecurity.InputFilter(txtCustomField1.Text, PortalSecurity.FilterFlag.NoScripting);
                 objEventRecurMaster.CustomField2 =
@@ -1720,40 +1865,42 @@ namespace DotNetNuke.Modules.Events
                 objEventRecurMaster.Reminder =
                     objSecurity.InputFilter(txtReminder.Text, PortalSecurity.FilterFlag.NoScripting);
                 objEventRecurMaster.Summary =
-                    objSecurity.InputFilter(Convert.ToString(ftbSummary.Text),
-                                            PortalSecurity.FilterFlag.NoScripting);
+                    objSecurity.InputFilter(summaryText, PortalSecurity.FilterFlag.NoScripting);
             }
 
-            // If New Event
-            if (processItem < 0)
+            // Handle image-related fields
+            if (ctlURL.Url != string.Empty)
             {
-                // If Moderator turned on, set approve=false
-                if (Settings.Moderateall)
+                objEventRecurMaster.ImageDisplay = true;
+                if (ctlURL.UrlType == "F")
                 {
-                    objEventRecurMaster.Approved = false;
+                    if (ctlURL.Url.StartsWith("FileID="))
+                    {
+                        var fileId = int.Parse(Convert.ToString(ctlURL.Url.Substring(7)));
+                        var objFileInfo = FileManager.Instance.GetFile(fileId);
+                        if (txtWidth.Text == string.Empty || txtWidth.Text == 0.ToString())
+                        {
+                            txtWidth.Text = Convert.ToString(objFileInfo.Width.ToString());
+                        }
+                        if (txtHeight.Text == "" || txtHeight.Text == 0.ToString())
+                        {
+                            txtHeight.Text = Convert.ToString(objFileInfo.Height.ToString());
+                        }
+                    }
                 }
-                else
-                {
-                    objEventRecurMaster.Approved = true;
-                }
+                objEventRecurMaster.ImageURL = Convert.ToString(ctlURL.Url);
+                objEventRecurMaster.ImageType = Convert.ToString(ctlURL.UrlType);
             }
-
-            // Reset Approved, if Moderate All option is on
-            if (Settings.Moderateall &&
-                objEventRecurMaster.Approved)
+            else
             {
-                objEventRecurMaster.Approved = false;
+                objEventRecurMaster.ImageDisplay = false;
             }
 
-            // If Admin or Moderator, automatically approve event
-            if (PortalSecurity.IsInRole(PortalSettings.AdministratorRoleName) || IsModerator())
-            {
-                objEventRecurMaster.Approved = true;
-            }
-
-            objEventRecurMaster.Importance =
-                (EventRecurMasterInfo.Priority)int.Parse(cmbImportance.SelectedItem.Value);
-
+            // Set form field values to objEventRecurMaster
+            objEventRecurMaster.ImageWidth = txtWidth.Text == "" ? 0 : int.Parse(txtWidth.Text);
+            objEventRecurMaster.ImageHeight = txtHeight.Text == "" ? 0 : int.Parse(txtHeight.Text);
+            objEventRecurMaster.Category = int.Parse(cmbCategory.SelectedValue);
+            objEventRecurMaster.Location = int.Parse(cmbLocation.SelectedValue);
             objEventRecurMaster.Signups = chkSignups.Checked;
             objEventRecurMaster.AllowAnonEnroll = chkAllowAnonEnroll.Checked;
             if (rblFree.Checked)
@@ -1764,11 +1911,9 @@ namespace DotNetNuke.Modules.Events
             {
                 objEventRecurMaster.EnrollType = "PAID";
             }
-
             objEventRecurMaster.PayPalAccount = txtPayPalAccount.Text;
             objEventRecurMaster.EnrollFee = decimal.Parse(txtEnrollFee.Text);
             objEventRecurMaster.MaxEnrollment = Convert.ToInt32(txtMaxEnrollment.Text);
-
             if (int.Parse(ddEnrollRoles.SelectedValue) != -1)
             {
                 objEventRecurMaster.EnrollRoleID = int.Parse(ddEnrollRoles.SelectedItem.Value);
@@ -1777,7 +1922,6 @@ namespace DotNetNuke.Modules.Events
             {
                 objEventRecurMaster.EnrollRoleID = -1;
             }
-
             // Update Detail Page setting in the database
             if (chkDetailPage.Checked && URLDetail.Url != "")
             {
@@ -1789,7 +1933,6 @@ namespace DotNetNuke.Modules.Events
             {
                 objEventRecurMaster.DetailPage = false;
             }
-
             // Update Image settings in the database
             if (chkDisplayImage.Checked)
             {
@@ -1817,58 +1960,44 @@ namespace DotNetNuke.Modules.Events
             {
                 objEventRecurMaster.ImageDisplay = false;
             }
-
-            objEventRecurMaster.ImageWidth = txtWidth.Text == "" ? 0 : int.Parse(txtWidth.Text);
-
-            objEventRecurMaster.ImageHeight = txtHeight.Text == "" ? 0 : int.Parse(txtHeight.Text);
-
-            objEventRecurMaster.Category = int.Parse(cmbCategory.SelectedValue);
-            objEventRecurMaster.Location = int.Parse(cmbLocation.SelectedValue);
-
             objEventRecurMaster.SendReminder = chkReminder.Checked;
             objEventRecurMaster.ReminderTime = int.Parse(txtReminderTime.Text);
             objEventRecurMaster.ReminderTimeMeasurement = ddlReminderTimeMeasurement.SelectedValue;
             objEventRecurMaster.ReminderFrom = txtReminderFrom.Text;
-
             objEventRecurMaster.EnrollListView = chkEnrollListView.Checked;
             objEventRecurMaster.DisplayEndDate = chkDisplayEndDate.Checked;
             objEventRecurMaster.AllDayEvent = chkAllDayEvent.Checked;
             objEventRecurMaster.EventTimeZoneId = cboTimeZone.SelectedValue;
             objEventRecurMaster.SocialGroupID = GetUrlGroupId();
             objEventRecurMaster.SocialUserID = GetUrlUserId();
+            // Set importance/priority
+            objEventRecurMaster.Importance = (EventRecurMasterInfo.Priority)int.Parse(cmbImportance.SelectedItem.Value);
+            // Auto-approve based on moderation setting
+            objEventRecurMaster.Approved = !Settings.Moderateall;
 
-
-            // If it is possible we are edititng a recurring event create RRULE
-            if (processItem == 0 || _editRecur || !_editRecur && objEventRMSave.RRULE == "")
+            // If New Event
+            if (processItem < 0)
             {
-                objEventRecurMaster = CreateEventRRULE(objEventRecurMaster);
-                if (rblRepeatTypeN.Checked)
-                {
-                    objEventRecurMaster.Until = objEventRecurMaster.Dtstart.Date;
-                }
-            }
+                // This is a new event - create new instances
+                var lstEventsNew = default(ArrayList);
+                lstEventsNew =
+                    _objCtlEventRecurMaster.CreateEventRecurrences(objEventRecurMaster, intDuration,
+                                                                        Settings.Maxrecurrences);
+                _lstEvents = CompareOldNewEvents(_lstEvents, lstEventsNew);
+                FileLog($"CreateEventRecurrences returned {lstEventsNew.Count} items for NEW event");
 
-            // If editing single occurence of recurring event & start date > last date, error
-            if (processItem > 0 && objEventRMSave.RRULE != "" && !_editRecur)
-            {
-                if (tStartTime.Date > objEventRMSave.Until.Date)
+                if (lstEventsNew.Count == 0)
                 {
-                    valValidRecurStartDate.IsValid = false;
-                    valValidRecurStartDate.Visible = true;
-                    return;
-                }
-                if (tStartTime.Date < objEventRMSave.Dtstart.Date)
-                {
-                    valValidRecurStartDate2.IsValid = false;
-                    valValidRecurStartDate2.Visible = true;
+                    // Last error!!
+                    valValidRecurEndDate2.IsValid = false;
+                    valValidRecurEndDate2.Visible = true;
+                    FileLog("CreateEventRecurrences returned 0 items; aborting new event save");
                     return;
                 }
             }
-
-            // If new Event or Recurring event then check for new instances
-            if (processItem < 0 ||
-                string.IsNullOrEmpty(objEventRMSave.RRULE) && objEventRecurMaster.RRULE != "" && !_editRecur || _editRecur)
+            else if (_editRecur && !string.IsNullOrEmpty(objEventRecurMaster.RRULE))
             {
+                // This is editing an entire recurring series - regenerate all instances
                 var lstEventsNew = default(ArrayList);
                 lstEventsNew =
                     _objCtlEventRecurMaster.CreateEventRecurrences(objEventRecurMaster, intDuration,
@@ -1883,13 +2012,16 @@ namespace DotNetNuke.Modules.Events
                     return;
                 }
             }
+            // For existing events that are NOT editing the entire series, 
+            // we keep the existing _lstEvents as populated earlier (either single event or existing recurrences)
+            // and do NOT call CreateEventRecurrences to avoid duplication
 
             foreach (EventInfo tempLoopVar_objEvent in _lstEvents)
             {
                 objEvent = tempLoopVar_objEvent;
                 if (objEvent.EventID > 0 && objEvent.UpdateStatus != "Delete")
                 {
-                    objEvent.UpdateStatus = "Match";
+                    // Don't set UpdateStatus to "Match" yet - let the comparison logic determine it
                     var objEventSave = objEvent.Clone();
                     if (_editRecur && objEvent.EventTimeBegin.ToShortTimeString() ==
                         objEventRMSave.Dtstart.ToShortTimeString())
@@ -1919,10 +2051,12 @@ namespace DotNetNuke.Modules.Events
                         objEvent.Duration = intDuration;
                     }
 
-                    if (_editRecur && objEvent.EventName == objEventRMSave.EventName || !_editRecur)
-                    {
-                        objEvent.EventName = objEventRecurMaster.EventName;
-                    }
+                                            if (_editRecur && objEvent.EventName == objEventRMSave.EventName || !_editRecur)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"DEBUG: Updating objEvent.EventName from '{objEvent.EventName}' to '{objEventRecurMaster.EventName}'");
+                            objEvent.EventName = objEventRecurMaster.EventName;
+                            System.Diagnostics.Debug.WriteLine($"DEBUG: objEvent.EventName is now = '{objEvent.EventName}'");
+                        }
 
                     if (_editRecur && objEvent.EventDesc == objEventRMSave.EventDesc || !_editRecur)
                     {
@@ -2127,10 +2261,19 @@ namespace DotNetNuke.Modules.Events
                         objEvent.Summary != objEventSave.Summary ||
                         objEvent.OwnerID != objEventSave.OwnerID)
                     {
+                        System.Diagnostics.Debug.WriteLine($"DEBUG: Changes detected! Setting UpdateStatus to 'Update'");
+                        System.Diagnostics.Debug.WriteLine($"DEBUG: EventName comparison: '{objEvent.EventName}' != '{objEventSave.EventName}' = {objEvent.EventName != objEventSave.EventName}");
                         objEvent.LastUpdatedID = UserId;
                         objEvent.Approved = objEventRecurMaster.Approved;
                         objEvent.UpdateStatus = "Update";
                     }
+                }
+
+                // If UpdateStatus is still not set for existing events, mark as "Match"
+                // Do NOT override "Add" for new events
+                if (objEvent.UpdateStatus != "Update" && objEvent.UpdateStatus != "Delete" && objEvent.UpdateStatus != "Add")
+                {
+                    objEvent.UpdateStatus = "Match";
                 }
 
                 // Do we need to check for schedule conflict
@@ -2179,7 +2322,7 @@ namespace DotNetNuke.Modules.Events
             }
 
             if (objEventRecurMaster.RecurMasterID == -1 ||
-                objEventRMSave.RRULE == string.Empty && !_editRecur || _editRecur)
+                _editRecur)
             {
                 objEventRecurMaster =
                     _objCtlEventRecurMaster.EventsRecurMasterSave(objEventRecurMaster, TabId, true);
@@ -2207,6 +2350,11 @@ namespace DotNetNuke.Modules.Events
             {
                 objEvent = tempLoopVar_objEvent;
                 objEvent.RecurMasterID = objEventRecurMaster.RecurMasterID;
+                // For brand new events, set Approved according to moderation setting
+                if (processItem < 0)
+                {
+                    objEvent.Approved = !Settings.Moderateall;
+                }
                 switch (objEvent.UpdateStatus)
                 {
                     case "Match":
@@ -2215,10 +2363,23 @@ namespace DotNetNuke.Modules.Events
                         _objCtlEvent.EventsDelete(objEvent.EventID, objEvent.ModuleID, objEvent.ContentItemID);
                         break;
                     default:
-                        if (!objEvent.Cancelled)
-                        {
-                            var oEvent = objEvent;
-                            objEvent = _objCtlEvent.EventsSave(objEvent, false, TabId, true);
+                                                    if (!objEvent.Cancelled)
+                            {
+                                System.Diagnostics.Debug.WriteLine($"DEBUG: About to save event with EventName = '{objEvent.EventName}' and UpdateStatus = '{objEvent.UpdateStatus}'");
+                                FileLog($"Saving event: UpdateStatus={objEvent.UpdateStatus}, EventID={objEvent.EventID}, OriginalDateBegin={objEvent.OriginalDateBegin:O}");
+                                var oEvent = objEvent;
+                                var savedEvent = _objCtlEvent.EventsSave(objEvent, false, TabId, true);
+                                if (savedEvent == null)
+                                {
+                                    FileLog($"EventsSave returned null for update. Using original event. EventID={oEvent?.EventID}, ModuleID={oEvent?.ModuleID}");
+                                    objEvent = oEvent;
+                                }
+                                else
+                                {
+                                    objEvent = savedEvent;
+                                    FileLog($"Saved event returned EventID={objEvent.EventID}");
+                                }
+                                System.Diagnostics.Debug.WriteLine($"DEBUG: Event saved, returned EventName = '{objEvent.EventName}'");
                             if (!oEvent.Approved && !blModeratorEmailSent)
                             {
                                 oEvent.RRULE = objEventRecurMaster.RRULE;
@@ -2831,14 +2992,38 @@ namespace DotNetNuke.Modules.Events
         {
             try
             {
+                                    // Debug: Log the _itemID value
+        System.Diagnostics.Debug.WriteLine($"DEBUG: updateButton_Click - _itemID = {_itemID}");
+                FileLog($"updateButton_Click start - _itemID={_itemID}");
+                
                 UpdateProcessing(_itemID);
+                FileLog($"updateButton_Click after UpdateProcessing - Page.IsValid={Page.IsValid}");
                 if (Page.IsValid)
                 {
-                    Response.Redirect(GetStoredPrevPage(), true);
+                                    // Navigate to the edited/created event instead of back to previous page
+                string navigateUrl;
+                if (_itemID > 0)
+                {
+                    // Editing existing event - navigate to that event details page
+                    var objEventInfoHelper = new EventInfoHelper(ModuleId, TabId, PortalId, Settings);
+                    navigateUrl = objEventInfoHelper.GetDetailPageRealURL(_itemID, GetUrlGroupId(), GetUrlUserId());
+                }
+                else
+                {
+                    // For new events, we'll navigate to the event list since we don't have the new EventID yet
+                    // This is simpler and more reliable than trying to find the event by title
+                    navigateUrl = GetSocialNavigateUrl();
+                }
+                
+                FileLog($"Navigating to: {navigateUrl}");
+                Response.Redirect(navigateUrl, false);
+                Context.ApplicationInstance.CompleteRequest();
+                return;
                 }
             }
             catch (Exception exc) //Module failed to load
             {
+                FileLog("updateButton_Click exception: " + exc.ToString());
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
